@@ -3,13 +3,12 @@ default:
 
 alias b := build
 alias d := dev
-alias ba := build-all
 
 build: 
-    cargo tauri build
+    flutter build macos --release
 
 dev: 
-    cargo tauri dev
+    flutter run
 
 build-all: 
     
@@ -22,3 +21,6 @@ clean:
 
 watch: 
     flutter_rust_bridge_codegen generate --watch
+
+get: 
+    flutter pub get

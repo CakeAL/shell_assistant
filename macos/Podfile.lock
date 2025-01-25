@@ -1,19 +1,25 @@
 PODS:
+  - desktop_window (0.0.1):
+    - FlutterMacOS
   - FlutterMacOS (1.0.0)
   - rust_lib_shell_assistant (0.0.1):
     - FlutterMacOS
 
 DEPENDENCIES:
+  - desktop_window (from `Flutter/ephemeral/.symlinks/plugins/desktop_window/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - rust_lib_shell_assistant (from `Flutter/ephemeral/.symlinks/plugins/rust_lib_shell_assistant/macos`)
 
 EXTERNAL SOURCES:
+  desktop_window:
+    :path: Flutter/ephemeral/.symlinks/plugins/desktop_window/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
   rust_lib_shell_assistant:
     :path: Flutter/ephemeral/.symlinks/plugins/rust_lib_shell_assistant/macos
 
 SPEC CHECKSUMS:
+  desktop_window: fb7c4f12c1129f947ac482296b6f14059d57a3c3
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   rust_lib_shell_assistant: f2c973d53e828fe414508ad53d45d7d39611b18c
 
