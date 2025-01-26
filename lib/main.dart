@@ -3,6 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:shell_assistant/src/rust/frb_generated.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shell_assistant/theme.dart';
 
 Future<void> main() async {
   await RustLib.init();
@@ -11,25 +12,37 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+final _appTheme = AppTheme();
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: FluentApp(
+    return ChangeNotifierProvider.value(
+      value: _appTheme,
+      builder: (context, child) {
+        final appTheme = context.watch<AppTheme>();
+        return FluentApp(
         title: "Shell Assistant",
-        theme: FluentThemeData(),
+        color: appTheme.color,
+        theme: FluentThemeData(
+          accentColor: appTheme.color,
+        ),
+        darkTheme: FluentThemeData(
+          brightness: Brightness.dark,
+          accentColor: appTheme.color,
+        ),
+        themeMode: appTheme.mode,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
+        locale: appTheme.locale,
         home: MyHomePage(),
-      ),
+      );
+      }
     );
   }
 }
-
-class MyAppState extends ChangeNotifier {}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
