@@ -1,6 +1,7 @@
 import 'package:desktop_window/desktop_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
+import 'package:shell_assistant/pages/settings.dart';
 import 'package:shell_assistant/src/rust/frb_generated.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shell_assistant/theme.dart';
@@ -20,27 +21,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
-      value: _appTheme,
-      builder: (context, child) {
-        final appTheme = context.watch<AppTheme>();
-        return FluentApp(
-        title: "Shell Assistant",
-        color: appTheme.color,
-        theme: FluentThemeData(
-          accentColor: appTheme.color,
-        ),
-        darkTheme: FluentThemeData(
-          brightness: Brightness.dark,
-          accentColor: appTheme.color,
-        ),
-        themeMode: appTheme.mode,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: appTheme.locale,
-        home: MyHomePage(),
-      );
-      }
-    );
+        value: _appTheme,
+        builder: (context, child) {
+          final appTheme = context.watch<AppTheme>();
+          return FluentApp(
+            title: "Shell Assistant",
+            color: appTheme.color,
+            theme: FluentThemeData(
+              accentColor: appTheme.color,
+            ),
+            darkTheme: FluentThemeData(
+              brightness: Brightness.dark,
+              accentColor: appTheme.color,
+            ),
+            themeMode: appTheme.mode,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: appTheme.locale,
+            home: MyHomePage(),
+          );
+        });
   }
 }
 
@@ -59,6 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     Widget page;
     switch (selectedIndex) {
+      case 2:
+        page = Settings();
       default:
         page = Center(
           child: Text('fsdafaf'),
@@ -72,30 +74,38 @@ class _MyHomePageState extends State<MyHomePage> {
             automaticallyImplyLeading: false,
           ),
           pane: NavigationPane(
-            selected: selectedIndex,
-            onItemPressed: (index) => {
-              if (index == selectedIndex)
-                {
-                  if (displayMode == PaneDisplayMode.open)
-                    {setState(() => displayMode = PaneDisplayMode.compact)}
-                  else if (displayMode == PaneDisplayMode.compact)
-                    {setState(() => displayMode == PaneDisplayMode.open)}
-                }
-            },
-            onChanged: (value) => setState(() => selectedIndex = value),
-            size: NavigationPaneSize(openWidth: 200.0),
-            displayMode: PaneDisplayMode.open,
-            items: [
-              PaneItem(
-                  icon: const Icon(FluentIcons.rev_toggle_key),
-                  title: Text(AppLocalizations.of(context)!.bypassSignature),
-                  body: page),
-              PaneItem(
-                  icon: const Icon(FluentIcons.signin),
-                  title: Text(AppLocalizations.of(context)!.signature),
-                  body: page)
-            ],
-          ));
+              selected: selectedIndex,
+              onItemPressed: (index) => {
+                    if (index == selectedIndex)
+                      {
+                        if (displayMode == PaneDisplayMode.open)
+                          {
+                            setState(
+                                () => displayMode = PaneDisplayMode.compact)
+                          }
+                        else if (displayMode == PaneDisplayMode.compact)
+                          {setState(() => displayMode == PaneDisplayMode.open)}
+                      }
+                  },
+              onChanged: (value) => setState(() => selectedIndex = value),
+              size: NavigationPaneSize(openWidth: 200.0),
+              displayMode: PaneDisplayMode.open,
+              items: [
+                PaneItem(
+                    icon: const Icon(FluentIcons.rev_toggle_key),
+                    title: Text(AppLocalizations.of(context)!.bypassSignature),
+                    body: page),
+                PaneItem(
+                    icon: const Icon(FluentIcons.signin),
+                    title: Text(AppLocalizations.of(context)!.signature),
+                    body: page)
+              ],
+              footerItems: [
+                PaneItem(
+                    icon: const Icon(FluentIcons.settings),
+                    title: Text(AppLocalizations.of(context)!.settings),
+                    body: page)
+              ]));
     });
   }
 }

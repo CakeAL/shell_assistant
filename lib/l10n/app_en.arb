@@ -1,15 +1,12 @@
 {
   "@@locale": "en",
   "shellAssistant": "Shell Assistant",
-  "@shellAssistant": {
-    "description": "the title of the app"
-  },
   "bypassSignature": "Bypass Signature",
-  "@bypassSignature": {
-    "description": "a function"
-  },
   "signature": "Signature",
-  "@signature": {
-    "description": "a function"
-  }
+  "settings": "Settings",
+  "theme": "Theme",
+  "system": "System",
+  "light": "Light",
+  "dark": "Dark",
+  "language": "Language"
 }
