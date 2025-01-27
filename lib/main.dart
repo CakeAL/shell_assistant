@@ -1,5 +1,6 @@
 import 'package:desktop_window/desktop_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:provider/provider.dart';
 import 'package:shell_assistant/pages/bypass_signature.dart';
 import 'package:shell_assistant/pages/settings.dart';
@@ -10,7 +11,13 @@ import 'package:shell_assistant/theme.dart';
 Future<void> main() async {
   await RustLib.init();
   WidgetsFlutterBinding.ensureInitialized();
+  await Window.initialize();
+
   await DesktopWindow.setMinWindowSize(Size(800, 600));
+  await Window.setEffect(
+      effect: WindowEffect.menu);
+  // await Window.makeTitlebarTransparent();
+  // await Window.enableFullSizeContentView();
   runApp(const MyApp());
 }
 
@@ -40,6 +47,14 @@ class MyApp extends StatelessWidget {
             supportedLocales: AppLocalizations.supportedLocales,
             locale: appTheme.locale,
             home: MyHomePage(),
+            builder: (context, child) {
+              return Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: NavigationPaneTheme(
+                      data: NavigationPaneThemeData(
+                          backgroundColor: Colors.transparent),
+                      child: child!));
+            },
           );
         });
   }

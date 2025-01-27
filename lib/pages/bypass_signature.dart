@@ -68,17 +68,16 @@ class _BypassSignatureState extends State<BypassSignature> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage.withPadding(
-        header: PageHeader(
-            title: Text(AppLocalizations.of(context)!.bypassSignature)),
-        content: ListView(
-          children: [
-            _firstCard(),
-            SizedBox(height: 20),
-            _secondCard(),
-            SizedBox(height: 20),
-            OpenToSee(command: "Here should be the command"),
-          ],
-        ));
+    return ScaffoldPage.scrollable(
+      header: PageHeader(
+          title: Text(AppLocalizations.of(context)!.bypassSignature)),
+      children: [
+        _firstCard(),
+        SizedBox(height: 20),
+        _secondCard(),
+        SizedBox(height: 20),
+        OpenToSee(command: "Here should be the command"),
+      ],
+    );
   }
 }
