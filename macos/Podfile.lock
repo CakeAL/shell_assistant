@@ -1,39 +1,57 @@
 PODS:
   - desktop_window (0.0.1):
     - FlutterMacOS
+  - device_info_plus (0.0.1):
+    - FlutterMacOS
   - FlutterMacOS (1.0.0)
+  - irondash_engine_context (0.0.1):
+    - FlutterMacOS
   - rust_lib_shell_assistant (0.0.1):
     - FlutterMacOS
   - shared_preferences_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
+  - super_native_extensions (0.0.1):
     - FlutterMacOS
   - system_theme (0.0.1):
     - FlutterMacOS
 
 DEPENDENCIES:
   - desktop_window (from `Flutter/ephemeral/.symlinks/plugins/desktop_window/macos`)
+  - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
+  - irondash_engine_context (from `Flutter/ephemeral/.symlinks/plugins/irondash_engine_context/macos`)
   - rust_lib_shell_assistant (from `Flutter/ephemeral/.symlinks/plugins/rust_lib_shell_assistant/macos`)
   - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - super_native_extensions (from `Flutter/ephemeral/.symlinks/plugins/super_native_extensions/macos`)
   - system_theme (from `Flutter/ephemeral/.symlinks/plugins/system_theme/macos`)
 
 EXTERNAL SOURCES:
   desktop_window:
     :path: Flutter/ephemeral/.symlinks/plugins/desktop_window/macos
+  device_info_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
+  irondash_engine_context:
+    :path: Flutter/ephemeral/.symlinks/plugins/irondash_engine_context/macos
   rust_lib_shell_assistant:
     :path: Flutter/ephemeral/.symlinks/plugins/rust_lib_shell_assistant/macos
   shared_preferences_foundation:
     :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin
+  super_native_extensions:
+    :path: Flutter/ephemeral/.symlinks/plugins/super_native_extensions/macos
   system_theme:
     :path: Flutter/ephemeral/.symlinks/plugins/system_theme/macos
 
 SPEC CHECKSUMS:
   desktop_window: fb7c4f12c1129f947ac482296b6f14059d57a3c3
+  device_info_plus: ce1b7762849d3ec103d0e0517299f2db7ad60720
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  irondash_engine_context: da62996ee25616d2f01bbeb85dc115d813359478
   rust_lib_shell_assistant: f2c973d53e828fe414508ad53d45d7d39611b18c
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
+  super_native_extensions: 85efee3a7495b46b04befcfc86ed12069264ebf3
   system_theme: c7b9f6659a5caa26c9bc2284da096781e9a6fcbc
 
 PODFILE CHECKSUM: 236401fc2c932af29a9fcf0e97baeeb2d750d367

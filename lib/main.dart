@@ -1,6 +1,7 @@
 import 'package:desktop_window/desktop_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:provider/provider.dart';
+import 'package:shell_assistant/pages/bypass_signature.dart';
 import 'package:shell_assistant/pages/settings.dart';
 import 'package:shell_assistant/src/rust/frb_generated.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -59,6 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     Widget page;
     switch (selectedIndex) {
+      case 0:
+        page = BypassSignature();
       case 2:
         page = Settings();
       default:

@@ -8,5 +8,10 @@
   "system": "System",
   "light": "Light",
   "dark": "Dark",
-  "language": "Language"
+  "language": "Language",
+  "submit": "Submit",
+  "wrongTypeFile": "You should drop a app!",
+  "bypassFunction": "Bypass Signature can solve the issue of applications being marked as 'damaged' or 'untrusted' after being downloaded from the internet. ",
+  "bypassUsage": "How to use: Drag and drop the application from Finder, or select it manually from Finder, then press the \"Submit\". ",
+  "openToSee": "Open to see the Command"
 }
