@@ -49,6 +49,7 @@ dependencies:
   super_drag_and_drop: ^0.8.24
   clipboard: ^0.1.3
   flutter_acrylic: ^1.1.4
+  file_picker: ^8.1.7
 
 dev_dependencies:
   flutter_test:

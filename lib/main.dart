@@ -7,10 +7,12 @@ import 'package:shell_assistant/pages/settings.dart';
 import 'package:shell_assistant/src/rust/frb_generated.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shell_assistant/theme.dart';
+import 'package:system_theme/system_theme.dart';
 
 Future<void> main() async {
   await RustLib.init();
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemTheme.accentColor.load();
   await Window.initialize();
 
   await DesktopWindow.setMinWindowSize(Size(800, 600));
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext bugcontext) {
     return ChangeNotifierProvider.value(
         value: _appTheme,
         builder: (context, child) {

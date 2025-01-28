@@ -1,6 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shell_assistant/src/rust/api/command.dart';
 import 'package:shell_assistant/widgets/app_drop_region.dart';
+import 'package:shell_assistant/widgets/file_picker_box.dart';
 import 'package:shell_assistant/widgets/open_to_see.dart';
 
 class BypassSignature extends StatefulWidget {
@@ -12,6 +14,19 @@ class BypassSignature extends StatefulWidget {
 
 class _BypassSignatureState extends State<BypassSignature> {
   final _controller = TextEditingController();
+  final _password = TextEditingController();
+  late String command = "sudo xattr -d com.apple.quarantine ";
+
+  @override
+  void initState() {
+    super.initState();
+    // 监听 _controller
+    _controller.addListener(() {
+      setState(() {
+        command = "sudo xattr -d com.apple.quarantine '${_controller.text}'";
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -19,31 +34,80 @@ class _BypassSignatureState extends State<BypassSignature> {
     super.dispose();
   }
 
+  void _showPasswordDialog(BuildContext context) async {
+    if (_controller.text.isEmpty) {
+      return;
+    }
+    await showDialog<String>(
+        context: context,
+        builder: (context) => ContentDialog(
+              title: Text(AppLocalizations.of(context)!.enterPassword),
+              content: SizedBox(
+                height: 30,
+                child: PasswordBox(
+                  controller: _password,
+                ),
+              ),
+              actions: [
+                Button(
+                  child: Text(AppLocalizations.of(context)!.cancel),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                FilledButton(
+                  child: Text(AppLocalizations.of(context)!.submit),
+                  onPressed: () {
+                    _executeCommand();
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ));
+  }
+
+  Future<void> _executeCommand() async {
+    InfoBarSeverity severity = InfoBarSeverity.error;
+    // debugPrint(_controller.text);
+    String text = executeBypassSignature(
+        path: _controller.text, password: _password.text);
+    _password.text = "";
+    debugPrint(text);
+    if (text == "Success" ||
+        text.contains("No such xattr: com.apple.quarantine")) {
+      text = "Success";
+      severity = InfoBarSeverity.success;
+    }
+    // debugPrint(text);
+    await displayInfoBar(context, builder: (context, close) {
+      return InfoBar(
+        title: Text(text),
+        action: IconButton(
+          icon: const Icon(FluentIcons.clear),
+          onPressed: close,
+        ),
+        severity: severity,
+      );
+    });
+  }
+
   Widget _firstCard() {
     return Card(
         child: Column(
       children: [
-        Center(
-          heightFactor: 1.5,
-          child: AppDropRegion(
-            controller: _controller,
-          ),
+        AppDropRegion(
+          controller: _controller,
         ),
         Row(
           children: [
-            Expanded(
-                flex: 3,
-                child: TextBox(
-                  placeholder: '/Applications/App Store.app',
-                  controller: _controller,
-                )),
+            FilePickerBox(controller: _controller),
             SizedBox(
               width: 10,
             ),
             Expanded(
                 child: FilledButton(
               child: Text(AppLocalizations.of(context)!.submit),
-              onPressed: () => debugPrint('pressed button'),
+              onPressed: () => _showPasswordDialog(context),
             ))
           ],
         )
@@ -73,10 +137,10 @@ class _BypassSignatureState extends State<BypassSignature> {
           title: Text(AppLocalizations.of(context)!.bypassSignature)),
       children: [
         _firstCard(),
-        SizedBox(height: 20),
+        SizedBox(height: 10),
         _secondCard(),
-        SizedBox(height: 20),
-        OpenToSee(command: "Here should be the command"),
+        SizedBox(height: 10),
+        OpenToSee(command: command),
       ],
     );
   }

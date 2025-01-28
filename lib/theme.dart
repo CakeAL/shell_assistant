@@ -7,6 +7,7 @@ import 'package:system_theme/system_theme.dart';
 class AppTheme extends ChangeNotifier {
   AppTheme() {
     _color = SystemTheme.accentColor.accent.toAccentColor();
+    // 这个有问题，不能实时更改 accent color
     SystemTheme.onChange.listen((event) {
       _color = SystemTheme.accentColor.accent.toAccentColor();
     });

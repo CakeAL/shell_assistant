@@ -49,7 +49,9 @@ class _AppDropRegionState extends State<AppDropRegion> {
         final appName = await reader.getSuggestedName();
         if (appName!.endsWith(".app")) {
           reader.getValue(
-              Formats.fileUri, (value) => widget.controller.text = value!.path);
+              Formats.fileUri,
+              (value) =>
+                  widget.controller.text = Uri.decodeComponent(value!.path));
         } else {
           // ignore: use_build_context_synchronously
           await displayInfoBar(context, builder: (context, close) {
@@ -64,24 +66,27 @@ class _AppDropRegionState extends State<AppDropRegion> {
           });
         }
       },
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-              width: 100.0,
-              height: 100.0,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 5,
-                  color: iconColor,
-                ),
-              )),
-          Icon(
-            FluentIcons.add_medium,
-            size: 60.0,
-            color: iconColor,
-          ),
-        ],
+      child: Center(
+        heightFactor: 1.5,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+                width: 100.0,
+                height: 100.0,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 5,
+                    color: iconColor,
+                  ),
+                )),
+            Icon(
+              FluentIcons.add_medium,
+              size: 60.0,
+              color: iconColor,
+            ),
+          ],
+        ),
       ),
     );
   }
