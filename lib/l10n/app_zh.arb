@@ -15,5 +15,9 @@
     "bypassFunction": "绕过签名可以解决大多数从网络上下载的应用运行时出现“已损坏/不受信任”的问题。",
     "bypassUsage": "使用方法：从访达中拖拽应用，或从访达中手动选择，最后点击提交。",
     "openToSee": "打开来看指令",
-    "enterPassword": "输入密码以允许操作"
+    "enterPassword": "输入密码以允许操作",
+    "systemScreenshot": "系统截图",
+    "screenshotSavedLocation": "截图保存位置",
+    "fileNamePrefix": "文件名前缀",
+    "screenshotFormat": "截图格式"
 }
