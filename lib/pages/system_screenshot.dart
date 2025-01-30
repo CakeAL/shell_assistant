@@ -11,12 +11,46 @@ class SystemScreenshot extends StatefulWidget {
 }
 
 class _SystemScreenshotState extends State<SystemScreenshot> {
-  final _screenshotSavedFolder = TextEditingController();
-  final _fileNamePrefix = TextEditingController();
-  String _screenshotFormat = "png";
-  bool _disabledScreenshotsShadow = false;
-  bool _fileNameWithTimestamp = false;
-  bool _screenshotThumbnail = false;
+  final _screenshotSavedFolder = TextEditingController(); // 0
+  final _fileNamePrefix = TextEditingController(); // 1
+  String _screenshotFormat = "png"; // 2
+  bool _disabledScreenshotsShadow = false; // 3
+  bool _fileNameWithTimestamp = true; // 4
+  bool _screenshotThumbnail = true; // 5
+
+  late final Map<int, String> _commandMap = {};
+  late String _command = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _screenshotSavedFolder.addListener(() {
+      _updateCommand(
+          0,
+          _screenshotSavedFolder.text.isNotEmpty
+              ? 'defaults write com.apple.screencapture location "${_screenshotSavedFolder.text}"'
+              : '');
+    });
+
+    _fileNamePrefix.addListener(() {
+      _updateCommand(
+          1,
+          _fileNamePrefix.text.isNotEmpty
+              ? 'defaults write com.apple.screencapture name "${_fileNamePrefix.text}"'
+              : '');
+    });
+  }
+
+  void _updateCommand(int key, String value) {
+    setState(() {
+      if (value.isNotEmpty) {
+        _commandMap[key] = value;
+      } else {
+        _commandMap.remove(key);
+      }
+      _command = "${_commandMap.values.join(" && \\\n")} && \\\nkillall SystemUIServer";
+    });
+  }
 
   @override
   void dispose() {
@@ -43,7 +77,7 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
             child: InfoLabel(
                 label: AppLocalizations.of(context)!.screenshotSavedLocation,
                 child: TextBox(
-                  placeholder: "~/Downloads",
+                  placeholder: "~/Desktop",
                   expands: false,
                   controller: _screenshotSavedFolder,
                   readOnly: true,
@@ -77,9 +111,13 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
                   child: FilledButton(
                 onPressed: _screenshotFormat == format
                     ? null
-                    : () => setState(() {
+                    : () {
+                        setState(() {
                           _screenshotFormat = format;
-                        }),
+                        });
+                        _updateCommand(2,
+                            'defaults write com.apple.screencapture type $_screenshotFormat');
+                      },
                 style: ButtonStyle(
                   backgroundColor:
                       WidgetStateProperty.resolveWith<Color>((states) {
@@ -110,18 +148,30 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
       children: [
         ToggleSwitch(
           checked: _disabledScreenshotsShadow,
-          onChanged: (v) => setState(() => _disabledScreenshotsShadow = v),
+          onChanged: (v) {
+            setState(() => _disabledScreenshotsShadow = v);
+            _updateCommand(3,
+                'defaults write com.apple.screencapture disable-shadow -bool $_disabledScreenshotsShadow');
+          },
           content:
               Text(AppLocalizations.of(context)!.disabledScreenshotsShadow),
         ),
         ToggleSwitch(
           checked: _fileNameWithTimestamp,
-          onChanged: (v) => setState(() => _fileNameWithTimestamp = v),
+          onChanged: (v) {
+            setState(() => _fileNameWithTimestamp = v);
+            _updateCommand(4,
+                'defaults write com.apple.screencapture include-date -bool $_fileNameWithTimestamp');
+          },
           content: Text(AppLocalizations.of(context)!.fileNameWithTimestamp),
         ),
         ToggleSwitch(
           checked: _screenshotThumbnail,
-          onChanged: (v) => setState(() => _screenshotThumbnail = v),
+          onChanged: (v) {
+            setState(() => _screenshotThumbnail = v);
+            _updateCommand(5,
+                'defaults write com.apple.screencapture show-thumbnail -bool $_screenshotThumbnail');
+          },
           content: Text(AppLocalizations.of(context)!.screenshotThumbnail),
         ),
       ],
@@ -130,13 +180,15 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
 
   Widget _forthCard() {
     return Card(
+        // backgroundColor: Colors.transparent,
+        // borderColor: Colors.transparent,
         child: Row(children: [
       Expanded(
           child: FilledButton(
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          Icon(FluentIcons.settings_add, size: 18),
+          Icon(FluentIcons.settings_add, size: 15),
           Text(AppLocalizations.of(context)!.writeSettings,
-              style: TextStyle(fontSize: 18))
+              style: TextStyle(fontSize: 15))
         ]),
         onPressed: () => debugPrint('pressed button'),
       )),
@@ -147,10 +199,10 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             Icon(
               FluentIcons.default_settings,
-              size: 18,
+              size: 15,
             ),
             Text(AppLocalizations.of(context)!.resetToDefault,
-                style: TextStyle(fontSize: 18))
+                style: TextStyle(fontSize: 15))
           ]),
           onPressed: () => debugPrint('pressed button'),
         ),
@@ -173,7 +225,7 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
         SizedBox(height: 10),
         _forthCard(),
         SizedBox(height: 10),
-        OpenToSee(command: "hello")
+        OpenToSee(command: _command)
       ],
     );
   }

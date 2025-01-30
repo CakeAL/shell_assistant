@@ -22,7 +22,7 @@
   "screenshotFormat": "Screenshot format",
   "disabledScreenshotsShadow": "Disabled windowed screenshots shadow",
   "fileNameWithTimestamp": "File name with timestamp",
-  "screenshotThumbnail": "Show screenshot thumbnails",
+  "screenshotThumbnail": "Show Floating thumbnails",
   "writeSettings": "Write settings",
   "resetToDefault": "Reset to default"
 }

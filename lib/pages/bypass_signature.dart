@@ -15,7 +15,7 @@ class BypassSignature extends StatefulWidget {
 class _BypassSignatureState extends State<BypassSignature> {
   final _controller = TextEditingController();
   final _password = TextEditingController();
-  late String command = "sudo xattr -d com.apple.quarantine ";
+  late String _command = "sudo xattr -d com.apple.quarantine ";
 
   @override
   void initState() {
@@ -23,7 +23,7 @@ class _BypassSignatureState extends State<BypassSignature> {
     // 监听 _controller
     _controller.addListener(() {
       setState(() {
-        command = "sudo xattr -d com.apple.quarantine '${_controller.text}'";
+        _command = "sudo xattr -d com.apple.quarantine '${_controller.text}'";
       });
     });
   }
@@ -140,7 +140,7 @@ class _BypassSignatureState extends State<BypassSignature> {
         SizedBox(height: 10),
         _secondCard(),
         SizedBox(height: 10),
-        OpenToSee(command: command),
+        OpenToSee(command: _command),
       ],
     );
   }
