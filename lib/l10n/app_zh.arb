@@ -19,5 +19,10 @@
     "systemScreenshot": "系统截图",
     "screenshotSavedLocation": "截图保存位置",
     "fileNamePrefix": "文件名前缀",
-    "screenshotFormat": "截图格式"
+    "screenshotFormat": "截图格式",
+    "disabledScreenshotsShadow": "禁用窗口截图阴影",
+    "fileNameWithTimestamp": "文件名包含时间戳",
+    "screenshotThumbnail": "截图后显示缩略图",
+    "writeSettings": "写入设置",
+    "resetToDefault": "恢复默认"
 }

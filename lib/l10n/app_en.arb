@@ -19,5 +19,10 @@
   "systemScreenshot": "System Screenshot",
   "screenshotSavedLocation": "Screenshot saved location",
   "fileNamePrefix": "File name prefix",
-  "screenshotFormat": "Screenshot format"
+  "screenshotFormat": "Screenshot format",
+  "disabledScreenshotsShadow": "Disabled windowed screenshots shadow",
+  "fileNameWithTimestamp": "File name with timestamp",
+  "screenshotThumbnail": "Show screenshot thumbnails",
+  "writeSettings": "Write settings",
+  "resetToDefault": "Reset to default"
 }

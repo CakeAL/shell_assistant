@@ -17,7 +17,7 @@ clippy:
     cd rust && cargo clippy
 
 clean: 
-    cd rust && cargo clean
+    cd rust && cargo clean && cd .. && flutter clean
 
 watch: 
     flutter_rust_bridge_codegen generate --watch
