@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shell_assistant/src/rust/api/command.dart';
 import 'package:shell_assistant/widgets/open_to_see.dart';
 
 class SystemScreenshot extends StatefulWidget {
@@ -48,7 +49,8 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
       } else {
         _commandMap.remove(key);
       }
-      _command = "${_commandMap.values.join(" && \\\n")} && \\\nkillall SystemUIServer";
+      _command =
+          "${_commandMap.values.join(" && \\\n")} && \\\nkillall SystemUIServer";
     });
   }
 
@@ -66,6 +68,19 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
       result = result.replaceFirst('/Volumes/Macintosh HD', '');
     }
     _screenshotSavedFolder.text = result;
+  }
+
+  void _showInfoBar() async {
+    await displayInfoBar(context, builder: (context, close) {
+      return InfoBar(
+        title: Text("Success"),
+        action: IconButton(
+          icon: const Icon(FluentIcons.clear),
+          onPressed: close,
+        ),
+        severity: InfoBarSeverity.success,
+      );
+    });
   }
 
   Widget _firstCard() {
@@ -190,7 +205,20 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
           Text(AppLocalizations.of(context)!.writeSettings,
               style: TextStyle(fontSize: 15))
         ]),
-        onPressed: () => debugPrint('pressed button'),
+        onPressed: () {
+          final map = {
+            if (_screenshotSavedFolder.text.isNotEmpty)
+              0: _screenshotSavedFolder.text,
+            if (_fileNamePrefix.text.isNotEmpty) 1: _fileNamePrefix.text,
+            2: _screenshotFormat,
+            3: _disabledScreenshotsShadow.toString(),
+            4: _fileNameWithTimestamp.toString(),
+            5: _screenshotThumbnail.toString(),
+          };
+          // print(map);
+          executeWriteScreenshotSettings(commandMap: map);
+          _showInfoBar();
+        },
       )),
       SizedBox(width: 40),
       Expanded(
@@ -204,7 +232,10 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
             Text(AppLocalizations.of(context)!.resetToDefault,
                 style: TextStyle(fontSize: 15))
           ]),
-          onPressed: () => debugPrint('pressed button'),
+          onPressed: () {
+            executeResetScreenshotSettings();
+            _showInfoBar();
+          },
         ),
       )
     ]));

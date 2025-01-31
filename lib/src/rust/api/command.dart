@@ -10,3 +10,10 @@ String executeBypassSignature(
         {required String path, required String password}) =>
     RustLib.instance.api
         .crateApiCommandExecuteBypassSignature(path: path, password: password);
+
+void executeWriteScreenshotSettings({required Map<int, String> commandMap}) =>
+    RustLib.instance.api
+        .crateApiCommandExecuteWriteScreenshotSettings(commandMap: commandMap);
+
+void executeResetScreenshotSettings() =>
+    RustLib.instance.api.crateApiCommandExecuteResetScreenshotSettings();
