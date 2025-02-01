@@ -3,6 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:provider/provider.dart';
 import 'package:shell_assistant/pages/bypass_signature.dart';
+import 'package:shell_assistant/pages/dock.dart';
 import 'package:shell_assistant/pages/settings.dart';
 import 'package:shell_assistant/pages/system_screenshot.dart';
 import 'package:shell_assistant/src/rust/frb_generated.dart';
@@ -95,9 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     title: Text(AppLocalizations.of(context)!.signature),
                     body: Text("No page")),
                 PaneItem(
-                    icon: const Icon(FluentIcons.camera),
+                    icon: const Icon(FluentIcons.desktop_screenshot),
                     title: Text(AppLocalizations.of(context)!.systemScreenshot),
-                    body: SystemScreenshot())
+                    body: SystemScreenshot()),
+                PaneItem(
+                    icon: const Icon(FluentIcons.rectangle_shape),
+                    title: Text(AppLocalizations.of(context)!.dock),
+                    body: Dock())
               ],
               footerItems: [
                 PaneItem(

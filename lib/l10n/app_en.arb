@@ -24,5 +24,6 @@
   "fileNameWithTimestamp": "File name with timestamp",
   "screenshotThumbnail": "Show Floating thumbnails",
   "writeSettings": "Write settings",
-  "resetToDefault": "Reset to default"
+  "resetToDefault": "Reset to default",
+  "dock": "Dock"
 }

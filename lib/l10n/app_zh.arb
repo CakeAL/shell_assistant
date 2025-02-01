@@ -24,5 +24,6 @@
     "fileNameWithTimestamp": "文件名包含时间戳",
     "screenshotThumbnail": "截图后显示缩略图",
     "writeSettings": "写入设置",
-    "resetToDefault": "恢复默认"
+    "resetToDefault": "恢复默认",
+    "dock": "程序坞"
 }
