@@ -25,5 +25,19 @@
     "screenshotThumbnail": "截图后显示缩略图",
     "writeSettings": "写入设置",
     "resetToDefault": "恢复默认",
-    "dock": "程序坞"
+    "dock": "程序坞",
+    "openStackByScroll": "用滚轮/滑动打开堆栈",
+    "openStackByScrollDescription": "这意味着你可以在程序坞通过滚轮/滑动的方式打开一个文件夹。",
+    "highlightIconHoverOver": "光标滑过堆栈时高亮",
+    "highlightIconHoverOverDescription": "当你在程序坞上打开一个堆栈，光标滑过的图标会高亮显示。",
+    "enableSingleAppMode": "启用单应用程序模式",
+    "enableSingleAppModeDescription": "点击程序坞的应用时，其他窗口都会隐藏。",
+    "disableAdjustDockSize": "禁用调节程序坞大小",
+    "disableAdjustDockSizeDescription": "如果你开启这个，你将无法通过鼠标点击并拖动的方式调节程序坞大小。",
+    "useSuckEffect": "使用吮吸最小化效果",
+    "useSuckEffectDescription": "启用吮吸作为最小化动画效果。默认的是神奇效果。",
+    "animationTime": "出现/隐藏动画时长",
+    "animationTimeDescription": "如果你开启了自动隐藏程序坞，可以通过这个调整弹出的动画时长。\n0 ms 意味着程序坞出现没有任何动画。",
+    "autohideDelay": "程序坞响应时间",
+    "autohideDelayDescription": "如果你开启了自动隐藏程序坞，可以通过这个调整鼠标贴靠边缘时程序坞延迟出现的速度。\n0 ms 意味着程序坞将会立刻出现。"
 }

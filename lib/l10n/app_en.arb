@@ -25,5 +25,19 @@
   "screenshotThumbnail": "Show Floating thumbnails",
   "writeSettings": "Write settings",
   "resetToDefault": "Reset to default",
-  "dock": "Dock"
+  "dock": "Dock",
+  "openStackByScroll": "Open stack by scroll",
+  "openStackByScrollDescription": "It means that you can open a stack of the folder icon on dock through scrolling. ",
+  "highlightIconHoverOver": "Highlight the icon in stack when cursor hovering",
+  "highlightIconHoverOverDescription": "When you open stack of a folder, you can highlight the icon where your cursor is hovering. ",
+  "enableSingleAppMode": "Enable single-app mode",
+  "enableSingleAppModeDescription": "When you click a app on dock, the others would be hidden. ",
+  "disableAdjustDockSize": "Disable adjust the size of dock",
+  "disableAdjustDockSizeDescription": "If you enable it, you won't adjust the size of dock by mouse clicking and sliding. ",
+  "useSuckEffect": "Use the Suck effect to minimize",
+  "useSuckEffectDescription": "Enable the Suck Animation for minimizing. The default effect is Genie.",
+  "animationTime": "The time of animation to appear or hide",
+  "animationTimeDescription": "If you enable auto hide, you can adjust the time of the animation when dock appears. \n0 ms means no animation. ",
+  "autohideDelay": "Dock auto hide delay",
+  "autohideDelayDescription": "If you enable auto hide, you can adjust the delay time of the dock appearance when the cursor touchs the screen edges. \n0 ms means that dock will appear immediately"
 }

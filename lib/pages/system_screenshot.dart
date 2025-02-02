@@ -3,6 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shell_assistant/src/rust/api/command.dart';
 import 'package:shell_assistant/widgets/open_to_see.dart';
+import 'package:shell_assistant/widgets/setting_card.dart';
 
 class SystemScreenshot extends StatefulWidget {
   const SystemScreenshot({super.key});
@@ -193,54 +194,6 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
     ));
   }
 
-  Widget _forthCard() {
-    return Card(
-        // backgroundColor: Colors.transparent,
-        // borderColor: Colors.transparent,
-        child: Row(children: [
-      Expanded(
-          child: FilledButton(
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          Icon(FluentIcons.settings_add, size: 15),
-          Text(AppLocalizations.of(context)!.writeSettings,
-              style: TextStyle(fontSize: 15))
-        ]),
-        onPressed: () {
-          final map = {
-            if (_screenshotSavedFolder.text.isNotEmpty)
-              0: _screenshotSavedFolder.text,
-            if (_fileNamePrefix.text.isNotEmpty) 1: _fileNamePrefix.text,
-            2: _screenshotFormat,
-            3: _disabledScreenshotsShadow.toString(),
-            4: _fileNameWithTimestamp.toString(),
-            5: _screenshotThumbnail.toString(),
-          };
-          // print(map);
-          executeWriteScreenshotSettings(commandMap: map);
-          _showInfoBar();
-        },
-      )),
-      SizedBox(width: 40),
-      Expanded(
-        child: Button(
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            Icon(
-              FluentIcons.default_settings,
-              size: 15,
-            ),
-            Text(AppLocalizations.of(context)!.resetToDefault,
-                style: TextStyle(fontSize: 15))
-          ]),
-          onPressed: () {
-            executeResetScreenshotSettings();
-            _showInfoBar();
-          },
-        ),
-      )
-    ]));
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage.scrollable(
@@ -254,7 +207,23 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
         SizedBox(height: 10),
         _thirdCard(),
         SizedBox(height: 10),
-        _forthCard(),
+        SettingCard(writeSettings: () {
+          final map = {
+            if (_screenshotSavedFolder.text.isNotEmpty)
+              0: _screenshotSavedFolder.text,
+            if (_fileNamePrefix.text.isNotEmpty) 1: _fileNamePrefix.text,
+            2: _screenshotFormat,
+            3: _disabledScreenshotsShadow.toString(),
+            4: _fileNameWithTimestamp.toString(),
+            5: _screenshotThumbnail.toString(),
+          };
+          // print(map);
+          executeWriteScreenshotSettings(commandMap: map);
+          _showInfoBar();
+        }, resetToDefault: () {
+          executeResetScreenshotSettings();
+          _showInfoBar();
+        }),
         SizedBox(height: 10),
         OpenToSee(command: _command)
       ],
