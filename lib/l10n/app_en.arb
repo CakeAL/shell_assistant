@@ -31,7 +31,7 @@
   "highlightIconHoverOver": "Highlight the icon in stack when cursor hovering",
   "highlightIconHoverOverDescription": "When you open stack of a folder, you can highlight the icon where your cursor is hovering. ",
   "enableSingleAppMode": "Enable single-app mode",
-  "enableSingleAppModeDescription": "When you click a app on dock, the others would be hidden. ",
+  "enableSingleAppModeDescription": "When you click a app on dock, the others would be hidden. (Deprecated)",
   "disableAdjustDockSize": "Disable adjust the size of dock",
   "disableAdjustDockSizeDescription": "If you enable it, you won't adjust the size of dock by mouse clicking and sliding. ",
   "useSuckEffect": "Use the Suck effect to minimize",

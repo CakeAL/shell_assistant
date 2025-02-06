@@ -31,7 +31,7 @@
     "highlightIconHoverOver": "光标滑过堆栈时高亮",
     "highlightIconHoverOverDescription": "当你在程序坞上打开一个堆栈，光标滑过的图标会高亮显示。",
     "enableSingleAppMode": "启用单应用程序模式",
-    "enableSingleAppModeDescription": "点击程序坞的应用时，其他窗口都会隐藏。",
+    "enableSingleAppModeDescription": "点击程序坞的应用时，其他窗口都会隐藏。（已弃用）",
     "disableAdjustDockSize": "禁用调节程序坞大小",
     "disableAdjustDockSizeDescription": "如果你开启这个，你将无法通过鼠标点击并拖动的方式调节程序坞大小。",
     "useSuckEffect": "使用吮吸最小化效果",

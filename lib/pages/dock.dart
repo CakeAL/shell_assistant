@@ -10,6 +10,16 @@ class Dock extends StatefulWidget {
   State<Dock> createState() => _DockState();
 }
 
+const List<String> method = [
+  "scroll-to-open",
+  "mouse-over-hilite-stack",
+  "single-app",
+  "size-immutable",
+  "mineffect",
+  "autohide-time-modifier",
+  "autohide-delay"
+];
+
 class _DockState extends State<Dock> {
   final List<bool> _switchStates = [false, false, false, false, false];
   final List<TextEditingController> times = [
@@ -25,6 +35,39 @@ class _DockState extends State<Dock> {
     FlyoutController(),
     FlyoutController()
   ];
+  late String _command = "";
+
+  @override
+  void initState() {
+    super.initState();
+    for (var controller in times) {
+      controller.addListener(() => setState(() => _updateCommand()));
+    }
+  }
+
+  void _updateCommand() {
+    _command = "";
+    for (int i = 0; i < 4; i++) {
+      _command +=
+          "defaults write com.apple.dock ${method[i]} -bool ${_switchStates[i]} && \\\n";
+    }
+    if (_switchStates[4] == true) {
+      _command +=
+          "defaults write com.apple.dock ${method[4]} -string \"suck\" && \\\n";
+    }
+    // else {
+    //   _command += "defaults delete com.apple.dock ${method[4]} && \\\n";
+    // }
+    for (int i = 5; i < method.length; i++) {
+      double? num = double.tryParse(times[i - 5].text);
+      if (times[i - 5].text.isNotEmpty && num != null) {
+        _command +=
+            "defaults write com.apple.dock ${method[i]} -float ${num / 1000} && \\\n";
+      }
+    }
+    // _command = _command.substring(0, _command.length - 5);
+    _command += "killall Dock";
+  }
 
   Widget _flyTarget(int index, String desc) {
     return FlyoutTarget(
@@ -68,7 +111,7 @@ class _DockState extends State<Dock> {
                     SizedBox(
                         width: 50,
                         child: TextBox(
-                          controller: times[index-5],
+                          controller: times[index - 5],
                           placeholder: "500",
                         )),
                     SizedBox(width: 5),
@@ -82,6 +125,7 @@ class _DockState extends State<Dock> {
                 onChanged: (v) {
                   setState(() {
                     _switchStates[index] = v;
+                    _updateCommand();
                   });
                 },
                 content: Row(children: [
@@ -123,7 +167,7 @@ class _DockState extends State<Dock> {
         SizedBox(height: 10),
         SettingCard(writeSettings: () {}, resetToDefault: () {}),
         SizedBox(height: 10),
-        OpenToSee(command: "Hello world!"),
+        OpenToSee(command: _command),
       ],
     );
   }
