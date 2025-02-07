@@ -17,3 +17,15 @@ void executeWriteScreenshotSettings({required Map<int, String> commandMap}) =>
 
 void executeResetScreenshotSettings() =>
     RustLib.instance.api.crateApiCommandExecuteResetScreenshotSettings();
+
+void executeWriteDockSettings(
+        {required List<bool> switchStates,
+        double? animationTime,
+        double? delayTime}) =>
+    RustLib.instance.api.crateApiCommandExecuteWriteDockSettings(
+        switchStates: switchStates,
+        animationTime: animationTime,
+        delayTime: delayTime);
+
+void executeResetDockSettings() =>
+    RustLib.instance.api.crateApiCommandExecuteResetDockSettings();

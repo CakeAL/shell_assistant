@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shell_assistant/src/rust/api/command.dart';
 import 'package:shell_assistant/widgets/open_to_see.dart';
 import 'package:shell_assistant/widgets/setting_card.dart';
 
@@ -54,10 +55,10 @@ class _DockState extends State<Dock> {
     if (_switchStates[4] == true) {
       _command +=
           "defaults write com.apple.dock ${method[4]} -string \"suck\" && \\\n";
+    } else {
+      _command +=
+          "defaults write com.apple.dock ${method[4]} -string \"genie\" && \\\n";
     }
-    // else {
-    //   _command += "defaults delete com.apple.dock ${method[4]} && \\\n";
-    // }
     for (int i = 5; i < method.length; i++) {
       double? num = double.tryParse(times[i - 5].text);
       if (times[i - 5].text.isNotEmpty && num != null) {
@@ -69,32 +70,44 @@ class _DockState extends State<Dock> {
     _command += "killall Dock";
   }
 
+  void _showInfoBar() async {
+    await displayInfoBar(context, builder: (context, close) {
+      return InfoBar(
+        title: Text("Success"),
+        action: IconButton(
+          icon: const Icon(FluentIcons.clear),
+          onPressed: close,
+        ),
+        severity: InfoBarSeverity.success,
+      );
+    });
+  }
+
   Widget _flyTarget(int index, String desc) {
+    // 还是点击触发好一些
     return FlyoutTarget(
-        controller: _flyoutController[index],
-        child: MouseRegion(
-          onEnter: (event) {
-            _flyoutController[index].showFlyout(
-              autoModeConfiguration: FlyoutAutoConfiguration(
-                preferredMode: FlyoutPlacementMode.topCenter,
-              ),
-              barrierDismissible: true,
-              dismissOnPointerMoveAway: true,
-              dismissWithEsc: true,
-              // navigatorKey: rootNavigatorKey.currentState,
-              builder: (context) {
-                return FlyoutContent(child: Text(desc));
-              },
-            );
-          },
-          child: IconButton(
-            icon: const Icon(
-              FluentIcons.status_circle_question_mark,
-              size: 20,
+      controller: _flyoutController[index],
+      child: IconButton(
+        icon: const Icon(
+          FluentIcons.status_circle_question_mark,
+          size: 20,
+        ),
+        onPressed: () {
+          _flyoutController[index].showFlyout(
+            autoModeConfiguration: FlyoutAutoConfiguration(
+              preferredMode: FlyoutPlacementMode.topCenter,
             ),
-            onPressed: () {},
-          ),
-        ));
+            barrierDismissible: true,
+            dismissOnPointerMoveAway: true,
+            dismissWithEsc: true,
+            // navigatorKey: rootNavigatorKey.currentState,
+            builder: (context) {
+              return FlyoutContent(child: Text(desc));
+            },
+          );
+        },
+      ),
+    );
   }
 
   Widget _firstCard(List<String> labels, List<String> descriptions) {
@@ -116,6 +129,7 @@ class _DockState extends State<Dock> {
                         )),
                     SizedBox(width: 5),
                     Text("ms"),
+                    SizedBox(width: 10),
                     _flyTarget(index, descriptions[index])
                   ],
                 );
@@ -130,6 +144,7 @@ class _DockState extends State<Dock> {
                 },
                 content: Row(children: [
                   Text(labels[index]),
+                  SizedBox(width: 10),
                   _flyTarget(index, descriptions[index])
                 ]),
               );
@@ -165,7 +180,18 @@ class _DockState extends State<Dock> {
       children: [
         _firstCard(labels, descriptions),
         SizedBox(height: 10),
-        SettingCard(writeSettings: () {}, resetToDefault: () {}),
+        SettingCard(writeSettings: () {
+          double? animationTime = double.tryParse(times[0].text);
+          double? delayTime = double.tryParse(times[1].text);
+          executeWriteDockSettings(
+              switchStates: _switchStates,
+              animationTime: animationTime,
+              delayTime: delayTime);
+          _showInfoBar();
+        }, resetToDefault: () {
+          executeResetDockSettings();
+          _showInfoBar();
+        }),
         SizedBox(height: 10),
         OpenToSee(command: _command),
       ],

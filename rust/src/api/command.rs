@@ -2,6 +2,7 @@ use std::{
     collections::HashMap,
     io::Write,
     process::{Command, Stdio},
+    sync::LazyLock,
 };
 
 #[flutter_rust_bridge::frb(sync)]
@@ -34,18 +35,25 @@ pub fn execute_bypass_signature(path: String, password: String) -> String {
     }
 }
 
+static SCREENSHOT_SETTINGS: LazyLock<Vec<&str>> = LazyLock::new(|| {
+    vec![
+        "location",
+        "name",
+        "type",
+        "disable-shadow",
+        "include-date",
+        "show-thumbnail",
+    ]
+});
+
 #[flutter_rust_bridge::frb(sync)]
 pub fn execute_write_screenshot_settings(command_map: HashMap<i32, String>) {
     // 遍历 commandMap，分步执行
     command_map.iter().for_each(|(&key, value)| {
         let _value = format!("\"{value}\"");
         let args = match key {
-            0 => vec!["location", &_value],
-            1 => vec!["name", &_value],
-            2 => vec!["type", value],
-            3 => vec!["disable-shadow", "-bool", value],
-            4 => vec!["include-date", "-bool", value],
-            5 => vec!["show-thumbnail", "-bool", value],
+            0 | 1 | 2 => vec![SCREENSHOT_SETTINGS[key as usize], &_value],
+            3 | 4 | 5 => vec![SCREENSHOT_SETTINGS[key as usize], "-bool", value],
             _ => return, // 如果没有匹配项，跳过当前循环
         };
 
@@ -59,21 +67,78 @@ pub fn execute_write_screenshot_settings(command_map: HashMap<i32, String>) {
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn execute_reset_screenshot_settings() {
-    vec![
-        "location",
-        "name",
-        "type",
-        "disable-shadow",
-        "include-date",
-        "show-thumbnail",
-    ]
-    .iter()
-    .for_each(|value| {
+    SCREENSHOT_SETTINGS.iter().for_each(|value| {
         let _ = Command::new("defaults")
             .args(["delete", "com.apple.screencapture", value])
             .output();
     });
     let _ = Command::new("killall").arg("SystemUIServer").output();
+}
+
+static DOCK_SETTINGS: LazyLock<Vec<&str>> = LazyLock::new(|| {
+    vec![
+        "scroll-to-open",
+        "mouse-over-hilite-stack",
+        "single-app",
+        "size-immutable",
+        "mineffect",
+        "autohide-time-modifier",
+        "autohide-delay",
+    ]
+});
+
+#[flutter_rust_bridge::frb(sync)]
+pub fn execute_write_dock_settings(
+    switch_states: Vec<bool>,
+    animation_time: Option<f64>,
+    delay_time: Option<f64>,
+) {
+    let state = ("true", "false");
+    #[allow(unused_assignments)]
+    let mut str_time = String::new();
+    for (i, setting) in DOCK_SETTINGS.iter().enumerate() {
+        let args = match i {
+            0..=3 => {
+                vec![
+                    *setting,
+                    "-bool",
+                    if switch_states[i] { state.0 } else { state.1 },
+                ]
+            }
+            4 => {
+                vec![
+                    *setting,
+                    "-string",
+                    if switch_states[i] { "suck" } else { "genie" },
+                ]
+            }
+            5 | 6 => {
+                let time = if i == 5 { animation_time } else { delay_time };
+                if let Some(t) = time {
+                    str_time = (t / 1000.0).to_string();
+                    vec![*setting, "-float", &str_time]
+                } else {
+                    continue;
+                }
+            }
+            _ => continue, // Skip invalid indices
+        };
+        let _ = Command::new("defaults")
+            .args(["write", "com.apple.dock"])
+            .args(args)
+            .output();
+    }
+    let _ = Command::new("killall").arg("Dock").output();
+}
+
+#[flutter_rust_bridge::frb(sync)]
+pub fn execute_reset_dock_settings() {
+    DOCK_SETTINGS.iter().for_each(|value| {
+        let _ = Command::new("defaults")
+            .args(["delete", "com.apple.dock", value])
+            .output();
+    });
+    let _ = Command::new("killall").arg("Dock").output();
 }
 
 #[flutter_rust_bridge::frb(init)]
