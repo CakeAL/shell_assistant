@@ -4,6 +4,7 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../frb_generated.dart';
+import 'entity.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 String executeBypassSignature(
@@ -29,3 +30,6 @@ void executeWriteDockSettings(
 
 void executeResetDockSettings() =>
     RustLib.instance.api.crateApiCommandExecuteResetDockSettings();
+
+SystemInfo getSystemInfo() =>
+    RustLib.instance.api.crateApiCommandGetSystemInfo();

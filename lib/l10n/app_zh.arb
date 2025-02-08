@@ -39,5 +39,7 @@
     "animationTime": "出现/隐藏动画时长",
     "animationTimeDescription": "如果你开启了自动隐藏程序坞，可以通过这个调整弹出的动画时长。\n0 ms 意味着程序坞出现没有任何动画。",
     "autohideDelay": "程序坞响应时间",
-    "autohideDelayDescription": "如果你开启了自动隐藏程序坞，可以通过这个调整鼠标贴靠边缘时程序坞延迟出现的速度。\n0 ms 意味着程序坞将会立刻出现。"
+    "autohideDelayDescription": "如果你开启了自动隐藏程序坞，可以通过这个调整鼠标贴靠边缘时程序坞延迟出现的速度。\n0 ms 意味着程序坞将会立刻出现。",
+    "systemInfo": "系统信息"
+
 }

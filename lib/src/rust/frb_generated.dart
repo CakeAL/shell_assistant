@@ -4,6 +4,7 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/command.dart';
+import 'api/entity.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -68,7 +69,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.6.0';
 
   @override
-  int get rustContentHash => 85902735;
+  int get rustContentHash => -1325922525;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -79,6 +80,8 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 }
 
 abstract class RustLibApi extends BaseApi {
+  Future<BatteryInfo> crateApiEntityBatteryInfoDefault();
+
   String crateApiCommandExecuteBypassSignature(
       {required String path, required String password});
 
@@ -94,6 +97,8 @@ abstract class RustLibApi extends BaseApi {
   void crateApiCommandExecuteWriteScreenshotSettings(
       {required Map<int, String> commandMap});
 
+  SystemInfo crateApiCommandGetSystemInfo();
+
   Future<void> crateApiCommandInitApp();
 }
 
@@ -106,6 +111,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   });
 
   @override
+  Future<BatteryInfo> crateApiEntityBatteryInfoDefault() {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 1, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_battery_info,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiEntityBatteryInfoDefaultConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiEntityBatteryInfoDefaultConstMeta =>
+      const TaskConstMeta(
+        debugName: "battery_info_default",
+        argNames: [],
+      );
+
+  @override
   String crateApiCommandExecuteBypassSignature(
       {required String path, required String password}) {
     return handler.executeSync(SyncTask(
@@ -113,7 +142,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(path, serializer);
         sse_encode_String(password, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 1)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -136,7 +165,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 2)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -159,7 +188,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 3)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -188,7 +217,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_list_bool(switchStates, serializer);
         sse_encode_opt_box_autoadd_f_64(animationTime, serializer);
         sse_encode_opt_box_autoadd_f_64(delayTime, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -213,7 +242,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Map_i_32_String(commandMap, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -232,12 +261,35 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  SystemInfo crateApiCommandGetSystemInfo() {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_system_info,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiCommandGetSystemInfoConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiCommandGetSystemInfoConstMeta =>
+      const TaskConstMeta(
+        debugName: "get_system_info",
+        argNames: [],
+      );
+
+  @override
   Future<void> crateApiCommandInitApp() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 6, port: port_);
+            funcId: 8, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -268,6 +320,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  BatteryInfo dco_decode_battery_info(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    return BatteryInfo(
+      currentCapacity: dco_decode_u_8(arr[0]),
+      appleRawCurrentCapacity: dco_decode_i_32(arr[1]),
+      designCapacity: dco_decode_i_32(arr[2]),
+      appleRawMaxCapacity: dco_decode_i_32(arr[3]),
+    );
+  }
+
+  @protected
   bool dco_decode_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as bool;
@@ -277,6 +343,23 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   double dco_decode_box_autoadd_f_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as double;
+  }
+
+  @protected
+  DiskInfo dco_decode_disk_info(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    return DiskInfo(
+      name: dco_decode_String(arr[0]),
+      fileSystem: dco_decode_String(arr[1]),
+      diskType: dco_decode_String(arr[2]),
+      mountPoint: dco_decode_String(arr[3]),
+      removable: dco_decode_bool(arr[4]),
+      totalSpace: dco_decode_u_64(arr[5]),
+      availableSpace: dco_decode_u_64(arr[6]),
+    );
   }
 
   @protected
@@ -298,6 +381,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<DiskInfo> dco_decode_list_disk_info(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_disk_info).toList();
+  }
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
@@ -307,6 +396,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<(int, String)> dco_decode_list_record_i_32_string(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_record_i_32_string).toList();
+  }
+
+  @protected
+  String? dco_decode_opt_String(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw == null ? null : dco_decode_String(raw);
   }
 
   @protected
@@ -326,6 +421,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dco_decode_i_32(arr[0]),
       dco_decode_String(arr[1]),
     );
+  }
+
+  @protected
+  SystemInfo dco_decode_system_info(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 11)
+      throw Exception('unexpected arr length: expect 11 but see ${arr.length}');
+    return SystemInfo(
+      hostName: dco_decode_opt_String(arr[0]),
+      userName: dco_decode_opt_String(arr[1]),
+      cpuModel: dco_decode_String(arr[2]),
+      numberOfCpus: dco_decode_i_32(arr[3]),
+      systemName: dco_decode_opt_String(arr[4]),
+      kernelVersion: dco_decode_opt_String(arr[5]),
+      osVersion: dco_decode_opt_String(arr[6]),
+      totalMemory: dco_decode_u_64(arr[7]),
+      totalSwap: dco_decode_u_64(arr[8]),
+      diskInfos: dco_decode_list_disk_info(arr[9]),
+      batteryInfo: dco_decode_battery_info(arr[10]),
+    );
+  }
+
+  @protected
+  BigInt dco_decode_u_64(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dcoDecodeU64(raw);
   }
 
   @protected
@@ -355,6 +477,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  BatteryInfo sse_decode_battery_info(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_currentCapacity = sse_decode_u_8(deserializer);
+    var var_appleRawCurrentCapacity = sse_decode_i_32(deserializer);
+    var var_designCapacity = sse_decode_i_32(deserializer);
+    var var_appleRawMaxCapacity = sse_decode_i_32(deserializer);
+    return BatteryInfo(
+        currentCapacity: var_currentCapacity,
+        appleRawCurrentCapacity: var_appleRawCurrentCapacity,
+        designCapacity: var_designCapacity,
+        appleRawMaxCapacity: var_appleRawMaxCapacity);
+  }
+
+  @protected
   bool sse_decode_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8() != 0;
@@ -364,6 +500,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   double sse_decode_box_autoadd_f_64(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_f_64(deserializer));
+  }
+
+  @protected
+  DiskInfo sse_decode_disk_info(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_name = sse_decode_String(deserializer);
+    var var_fileSystem = sse_decode_String(deserializer);
+    var var_diskType = sse_decode_String(deserializer);
+    var var_mountPoint = sse_decode_String(deserializer);
+    var var_removable = sse_decode_bool(deserializer);
+    var var_totalSpace = sse_decode_u_64(deserializer);
+    var var_availableSpace = sse_decode_u_64(deserializer);
+    return DiskInfo(
+        name: var_name,
+        fileSystem: var_fileSystem,
+        diskType: var_diskType,
+        mountPoint: var_mountPoint,
+        removable: var_removable,
+        totalSpace: var_totalSpace,
+        availableSpace: var_availableSpace);
   }
 
   @protected
@@ -391,6 +547,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<DiskInfo> sse_decode_list_disk_info(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <DiskInfo>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_disk_info(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
@@ -411,6 +579,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    if (sse_decode_bool(deserializer)) {
+      return (sse_decode_String(deserializer));
+    } else {
+      return null;
+    }
+  }
+
+  @protected
   double? sse_decode_opt_box_autoadd_f_64(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -427,6 +606,40 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_field0 = sse_decode_i_32(deserializer);
     var var_field1 = sse_decode_String(deserializer);
     return (var_field0, var_field1);
+  }
+
+  @protected
+  SystemInfo sse_decode_system_info(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_hostName = sse_decode_opt_String(deserializer);
+    var var_userName = sse_decode_opt_String(deserializer);
+    var var_cpuModel = sse_decode_String(deserializer);
+    var var_numberOfCpus = sse_decode_i_32(deserializer);
+    var var_systemName = sse_decode_opt_String(deserializer);
+    var var_kernelVersion = sse_decode_opt_String(deserializer);
+    var var_osVersion = sse_decode_opt_String(deserializer);
+    var var_totalMemory = sse_decode_u_64(deserializer);
+    var var_totalSwap = sse_decode_u_64(deserializer);
+    var var_diskInfos = sse_decode_list_disk_info(deserializer);
+    var var_batteryInfo = sse_decode_battery_info(deserializer);
+    return SystemInfo(
+        hostName: var_hostName,
+        userName: var_userName,
+        cpuModel: var_cpuModel,
+        numberOfCpus: var_numberOfCpus,
+        systemName: var_systemName,
+        kernelVersion: var_kernelVersion,
+        osVersion: var_osVersion,
+        totalMemory: var_totalMemory,
+        totalSwap: var_totalSwap,
+        diskInfos: var_diskInfos,
+        batteryInfo: var_batteryInfo);
+  }
+
+  @protected
+  BigInt sse_decode_u_64(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getBigUint64();
   }
 
   @protected
@@ -455,6 +668,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_battery_info(BatteryInfo self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_u_8(self.currentCapacity, serializer);
+    sse_encode_i_32(self.appleRawCurrentCapacity, serializer);
+    sse_encode_i_32(self.designCapacity, serializer);
+    sse_encode_i_32(self.appleRawMaxCapacity, serializer);
+  }
+
+  @protected
   void sse_encode_bool(bool self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self ? 1 : 0);
@@ -464,6 +686,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_f_64(self, serializer);
+  }
+
+  @protected
+  void sse_encode_disk_info(DiskInfo self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.name, serializer);
+    sse_encode_String(self.fileSystem, serializer);
+    sse_encode_String(self.diskType, serializer);
+    sse_encode_String(self.mountPoint, serializer);
+    sse_encode_bool(self.removable, serializer);
+    sse_encode_u_64(self.totalSpace, serializer);
+    sse_encode_u_64(self.availableSpace, serializer);
   }
 
   @protected
@@ -488,6 +722,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_disk_info(
+      List<DiskInfo> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_disk_info(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -502,6 +746,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_record_i_32_string(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    sse_encode_bool(self != null, serializer);
+    if (self != null) {
+      sse_encode_String(self, serializer);
     }
   }
 
@@ -521,6 +775,28 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.$1, serializer);
     sse_encode_String(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_system_info(SystemInfo self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_opt_String(self.hostName, serializer);
+    sse_encode_opt_String(self.userName, serializer);
+    sse_encode_String(self.cpuModel, serializer);
+    sse_encode_i_32(self.numberOfCpus, serializer);
+    sse_encode_opt_String(self.systemName, serializer);
+    sse_encode_opt_String(self.kernelVersion, serializer);
+    sse_encode_opt_String(self.osVersion, serializer);
+    sse_encode_u_64(self.totalMemory, serializer);
+    sse_encode_u_64(self.totalSwap, serializer);
+    sse_encode_list_disk_info(self.diskInfos, serializer);
+    sse_encode_battery_info(self.batteryInfo, serializer);
+  }
+
+  @protected
+  void sse_encode_u_64(BigInt self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putBigUint64(self);
   }
 
   @protected

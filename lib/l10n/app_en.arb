@@ -39,5 +39,6 @@
   "animationTime": "The time of animation to appear or hide",
   "animationTimeDescription": "If you enable auto hide, you can adjust the time of the animation when dock appears. \n0 ms means no animation. ",
   "autohideDelay": "Dock auto hide delay",
-  "autohideDelayDescription": "If you enable auto hide, you can adjust the delay time of the dock appearance when the cursor touchs the screen edges. \n0 ms means that dock will appear immediately"
+  "autohideDelayDescription": "If you enable auto hide, you can adjust the delay time of the dock appearance when the cursor touchs the screen edges. \n0 ms means that dock will appear immediately",
+  "systemInfo": "System information"
 }

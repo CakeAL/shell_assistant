@@ -1,9 +1,9 @@
 use std::{
-    collections::HashMap,
-    io::Write,
-    process::{Command, Stdio},
-    sync::LazyLock,
+ collections::HashMap, io::Write, process::{Command, Stdio}, sync::LazyLock
 };
+
+use crate::api::entity::{DiskInfo, SystemInfo};
+use crate::api::util::get_battery_info;
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn execute_bypass_signature(path: String, password: String) -> String {
@@ -52,8 +52,8 @@ pub fn execute_write_screenshot_settings(command_map: HashMap<i32, String>) {
     command_map.iter().for_each(|(&key, value)| {
         let _value = format!("\"{value}\"");
         let args = match key {
-            0 | 1 | 2 => vec![SCREENSHOT_SETTINGS[key as usize], &_value],
-            3 | 4 | 5 => vec![SCREENSHOT_SETTINGS[key as usize], "-bool", value],
+            0..=2 => vec![SCREENSHOT_SETTINGS[key as usize], &_value],
+            3..=5 => vec![SCREENSHOT_SETTINGS[key as usize], "-bool", value],
             _ => return, // 如果没有匹配项，跳过当前循环
         };
 
@@ -141,6 +141,50 @@ pub fn execute_reset_dock_settings() {
     let _ = Command::new("killall").arg("Dock").output();
 }
 
+#[flutter_rust_bridge::frb(sync)]
+pub fn get_system_info() -> SystemInfo {
+    use sysinfo::{Disks, System};
+    let mut sys = System::new_all();
+    sys.refresh_all();
+
+    let cpu_model = sys
+        .cpus()
+        .first()
+        .map(|cpu| cpu.brand())
+        .unwrap_or("Unknown");
+
+    let disks = Disks::new_with_refreshed_list().iter().map(|disk| {
+        DiskInfo {
+            name: disk.name().to_string_lossy().to_string(),
+            file_system: disk.file_system().to_string_lossy().to_string(),
+            disk_type: disk.kind().to_string(),
+            mount_point: disk.mount_point().to_string_lossy().to_string(),
+            removable: disk.is_removable(),
+            total_space: disk.total_space(),
+            available_space: disk.available_space(),
+        }
+    }).collect::<Vec<_>>();
+
+    let user_name = match Command::new("whoami").output() {
+        Ok(output) => Some(String::from_utf8_lossy(&output.stdout).trim().to_string()),
+        Err(_) => None,
+    };
+
+    SystemInfo {
+        host_name: System::host_name(),
+        user_name,
+        cpu_model: cpu_model.to_string(),
+        number_of_cpus: sys.cpus().len() as i32,
+        system_name: System::name(),
+        kernel_version: System::kernel_version(),
+        os_version: System::os_version(),
+        total_memory: sys.total_memory(),
+        total_swap: sys.total_swap(),
+        disk_infos: disks,
+        battery_info: get_battery_info().unwrap_or_default(),
+    }
+}
+
 #[flutter_rust_bridge::frb(init)]
 pub fn init_app() {
     // Default utilities - feel free to customize
@@ -168,5 +212,10 @@ mod tests {
             (5, "false".to_string()),
         ]);
         execute_write_screenshot_settings(command_map);
+    }
+
+    #[test]
+    fn test_get_system_info() {
+        get_system_info();
     }
 }
