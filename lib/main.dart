@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shell_assistant/pages/bypass_signature.dart';
 import 'package:shell_assistant/pages/dock.dart';
 import 'package:shell_assistant/pages/settings.dart';
-import 'package:shell_assistant/pages/system_info.dart';
+import 'package:shell_assistant/pages/system_information.dart';
 import 'package:shell_assistant/pages/system_screenshot.dart';
 import 'package:shell_assistant/src/rust/frb_generated.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                  PaneItem(
                     icon: const Icon(FluentIcons.system),
                     title: Text(AppLocalizations.of(context)!.systemInfo),
-                    body: SystemInfo()),
+                    body: SystemInformation()),
                 PaneItem(
                     icon: const Icon(FluentIcons.settings),
                     title: Text(AppLocalizations.of(context)!.settings),
