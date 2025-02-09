@@ -1,5 +1,8 @@
 use std::{
- collections::HashMap, io::Write, process::{Command, Stdio}, sync::LazyLock
+    collections::HashMap,
+    io::Write,
+    process::{Command, Stdio},
+    sync::LazyLock,
 };
 
 use crate::api::entity::{DiskInfo, SystemInfo};
@@ -153,8 +156,9 @@ pub fn get_system_info() -> SystemInfo {
         .map(|cpu| cpu.brand())
         .unwrap_or("Unknown");
 
-    let disks = Disks::new_with_refreshed_list().iter().map(|disk| {
-        DiskInfo {
+    let disks = Disks::new_with_refreshed_list()
+        .iter()
+        .map(|disk| DiskInfo {
             name: disk.name().to_string_lossy().to_string(),
             file_system: disk.file_system().to_string_lossy().to_string(),
             disk_type: disk.kind().to_string(),
@@ -162,13 +166,24 @@ pub fn get_system_info() -> SystemInfo {
             removable: disk.is_removable(),
             total_space: disk.total_space(),
             available_space: disk.available_space(),
-        }
-    }).collect::<Vec<_>>();
+        })
+        .collect::<Vec<_>>();
 
-    let user_name = match Command::new("whoami").output() {
-        Ok(output) => Some(String::from_utf8_lossy(&output.stdout).trim().to_string()),
-        Err(_) => None,
-    };
+    let user_name = Command::new("whoami")
+        .output()
+        .ok()
+        .and_then(|output| Some(String::from_utf8_lossy(&output.stdout).trim().to_string()));
+
+    let sip_status = Command::new("csrutil")
+        .arg("status")
+        .output()
+        .ok()
+        .and_then(|output| {
+            String::from_utf8_lossy(&output.stdout)
+                .split(':')
+                .last()
+                .map(|s| s.trim().to_string())
+        });
 
     SystemInfo {
         host_name: System::host_name(),
@@ -180,6 +195,7 @@ pub fn get_system_info() -> SystemInfo {
         os_version: System::os_version(),
         total_memory: sys.total_memory(),
         total_swap: sys.total_swap(),
+        sip_status,
         disk_infos: disks,
         battery_info: get_battery_info().unwrap_or_default(),
     }

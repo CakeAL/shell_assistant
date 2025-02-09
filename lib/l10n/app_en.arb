@@ -62,5 +62,6 @@
   "designCapacity": "Design capacity",
   "rawCurrentCapacity": "Raw current capacity",
   "rawMaxCapacity": "Raw max capacity",
-  "hardwareBatteryPercentage": "Hardware battery percentage"
+  "hardwareBatteryPercentage": "Hardware battery percentage",
+  "sipStatus": "SIP status"
 }

@@ -62,5 +62,6 @@
     "designCapacity": "设计电池容量",
     "rawCurrentCapacity": "当前电池电量",
     "rawMaxCapacity": "可达到最大电池电量",
-    "hardwareBatteryPercentage": "硬件电池百分比"
+    "hardwareBatteryPercentage": "硬件电池百分比",
+    "sipStatus": "是否开启 SIP"
 }

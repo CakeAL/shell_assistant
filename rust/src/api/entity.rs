@@ -8,6 +8,7 @@ pub struct SystemInfo {
     pub os_version: Option<String>,
     pub total_memory: u64,
     pub total_swap: u64,
+    pub sip_status: Option<String>,
     pub disk_infos: Vec<DiskInfo>,
     pub battery_info: BatteryInfo,
 }

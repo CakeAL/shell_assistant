@@ -69,7 +69,9 @@ class _SystemInformationState extends State<SystemInformation> {
                 _row(AppLocalizations.of(context)!.kernel,
                     _systemInfo.systemName ?? "Unknown kernel"),
                 _row(AppLocalizations.of(context)!.kernelVersion,
-                    _systemInfo.kernelVersion ?? "Unknown kernel version")
+                    _systemInfo.kernelVersion ?? "Unknown kernel version"),
+                _row(AppLocalizations.of(context)!.sipStatus,
+                    _systemInfo.sipStatus ?? "Unknown")
               ])),
         ],
       ),

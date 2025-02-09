@@ -93,6 +93,7 @@ class SystemInfo {
   final String? osVersion;
   final BigInt totalMemory;
   final BigInt totalSwap;
+  final String? sipStatus;
   final List<DiskInfo> diskInfos;
   final BatteryInfo batteryInfo;
 
@@ -106,6 +107,7 @@ class SystemInfo {
     this.osVersion,
     required this.totalMemory,
     required this.totalSwap,
+    this.sipStatus,
     required this.diskInfos,
     required this.batteryInfo,
   });
@@ -121,6 +123,7 @@ class SystemInfo {
       osVersion.hashCode ^
       totalMemory.hashCode ^
       totalSwap.hashCode ^
+      sipStatus.hashCode ^
       diskInfos.hashCode ^
       batteryInfo.hashCode;
 
@@ -138,6 +141,7 @@ class SystemInfo {
           osVersion == other.osVersion &&
           totalMemory == other.totalMemory &&
           totalSwap == other.totalSwap &&
+          sipStatus == other.sipStatus &&
           diskInfos == other.diskInfos &&
           batteryInfo == other.batteryInfo;
 }
