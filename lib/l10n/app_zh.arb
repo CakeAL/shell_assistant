@@ -63,5 +63,10 @@
     "rawCurrentCapacity": "当前电池电量",
     "rawMaxCapacity": "可达到最大电池电量",
     "hardwareBatteryPercentage": "硬件电池百分比",
-    "sipStatus": "是否开启 SIP"
+    "sipStatus": "是否开启 SIP",
+    "otherFunctions": "其他功能",
+    "openDynamicWallpapersFolder": "打开动态壁纸文件夹",
+    "openRecordingsFolder": "打开录音文件夹",
+    "currentFolderSize": "当前文件夹大小",
+    "folderPath": "文件夹路径"
 }

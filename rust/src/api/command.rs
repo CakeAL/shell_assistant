@@ -1,9 +1,12 @@
 use std::{
     collections::HashMap,
+    fs,
     io::Write,
     process::{Command, Stdio},
     sync::LazyLock,
 };
+
+use walkdir::WalkDir;
 
 use crate::api::entity::{DiskInfo, SystemInfo};
 use crate::api::util::get_battery_info;
@@ -145,6 +148,14 @@ pub fn execute_reset_dock_settings() {
 }
 
 #[flutter_rust_bridge::frb(sync)]
+pub fn get_user_name() -> Option<String> {
+    Command::new("whoami")
+        .output()
+        .ok()
+        .and_then(|output| Some(String::from_utf8_lossy(&output.stdout).trim().to_string()))
+}
+
+#[flutter_rust_bridge::frb(sync)]
 pub fn get_system_info() -> SystemInfo {
     use sysinfo::{Disks, System};
     let mut sys = System::new_all();
@@ -169,11 +180,6 @@ pub fn get_system_info() -> SystemInfo {
         })
         .collect::<Vec<_>>();
 
-    let user_name = Command::new("whoami")
-        .output()
-        .ok()
-        .and_then(|output| Some(String::from_utf8_lossy(&output.stdout).trim().to_string()));
-
     let sip_status = Command::new("csrutil")
         .arg("status")
         .output()
@@ -187,7 +193,7 @@ pub fn get_system_info() -> SystemInfo {
 
     SystemInfo {
         host_name: System::host_name(),
-        user_name,
+        user_name: get_user_name(),
         cpu_model: cpu_model.to_string(),
         number_of_cpus: sys.cpus().len() as i32,
         system_name: System::name(),
@@ -199,6 +205,21 @@ pub fn get_system_info() -> SystemInfo {
         disk_infos: disks,
         battery_info: get_battery_info().unwrap_or_default(),
     }
+}
+
+#[flutter_rust_bridge::frb(sync)]
+pub fn open_folder(path: String) {
+    let _ = Command::new("open").arg(path).status();
+}
+
+#[flutter_rust_bridge::frb(sync)]
+pub fn get_folder_size(path: String) -> u64 {
+    WalkDir::new(path)
+        .into_iter()
+        .filter_map(|entry| entry.ok()) // 过滤掉错误的文件
+        .filter_map(|entry| fs::metadata(entry.path()).ok()) // 获取元数据
+        .map(|metadata| metadata.len()) // 获取文件大小
+        .sum()
 }
 
 #[flutter_rust_bridge::frb(init)]
@@ -233,5 +254,12 @@ mod tests {
     #[test]
     fn test_get_system_info() {
         get_system_info();
+    }
+
+    #[test]
+    fn test_open_folder() {
+        let path = "/Library/Application Support/com.apple.idleassetsd/Customer".to_string();
+        open_folder(path.clone());
+        dbg!(get_folder_size(path));
     }
 }

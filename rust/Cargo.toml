@@ -9,3 +9,4 @@ crate-type = ["cdylib", "staticlib"]
 [dependencies]
 flutter_rust_bridge = "=2.6.0"
 sysinfo = "0.33.1"
+walkdir = "2.5.0"

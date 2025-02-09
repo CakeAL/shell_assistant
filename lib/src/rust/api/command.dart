@@ -31,5 +31,13 @@ void executeWriteDockSettings(
 void executeResetDockSettings() =>
     RustLib.instance.api.crateApiCommandExecuteResetDockSettings();
 
+String? getUserName() => RustLib.instance.api.crateApiCommandGetUserName();
+
 SystemInfo getSystemInfo() =>
     RustLib.instance.api.crateApiCommandGetSystemInfo();
+
+void openFolder({required String path}) =>
+    RustLib.instance.api.crateApiCommandOpenFolder(path: path);
+
+BigInt getFolderSize({required String path}) =>
+    RustLib.instance.api.crateApiCommandGetFolderSize(path: path);
