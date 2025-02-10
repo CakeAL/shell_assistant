@@ -25,7 +25,7 @@ pub struct DiskInfo {
     pub available_space: u64,
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 pub struct BatteryInfo {
     pub current_capacity: u8,
     pub apple_raw_current_capacity: i32,
