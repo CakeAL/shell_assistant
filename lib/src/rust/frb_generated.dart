@@ -528,8 +528,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SystemInfo dco_decode_system_info(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 12)
-      throw Exception('unexpected arr length: expect 12 but see ${arr.length}');
+    if (arr.length != 13)
+      throw Exception('unexpected arr length: expect 13 but see ${arr.length}');
     return SystemInfo(
       hostName: dco_decode_opt_String(arr[0]),
       userName: dco_decode_opt_String(arr[1]),
@@ -541,8 +541,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       totalMemory: dco_decode_u_64(arr[7]),
       totalSwap: dco_decode_u_64(arr[8]),
       sipStatus: dco_decode_opt_String(arr[9]),
-      diskInfos: dco_decode_list_disk_info(arr[10]),
-      batteryInfo: dco_decode_battery_info(arr[11]),
+      timeSinceBoot: dco_decode_opt_String(arr[10]),
+      diskInfos: dco_decode_list_disk_info(arr[11]),
+      batteryInfo: dco_decode_battery_info(arr[12]),
     );
   }
 
@@ -723,6 +724,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_totalMemory = sse_decode_u_64(deserializer);
     var var_totalSwap = sse_decode_u_64(deserializer);
     var var_sipStatus = sse_decode_opt_String(deserializer);
+    var var_timeSinceBoot = sse_decode_opt_String(deserializer);
     var var_diskInfos = sse_decode_list_disk_info(deserializer);
     var var_batteryInfo = sse_decode_battery_info(deserializer);
     return SystemInfo(
@@ -736,6 +738,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         totalMemory: var_totalMemory,
         totalSwap: var_totalSwap,
         sipStatus: var_sipStatus,
+        timeSinceBoot: var_timeSinceBoot,
         diskInfos: var_diskInfos,
         batteryInfo: var_batteryInfo);
   }
@@ -894,6 +897,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_64(self.totalMemory, serializer);
     sse_encode_u_64(self.totalSwap, serializer);
     sse_encode_opt_String(self.sipStatus, serializer);
+    sse_encode_opt_String(self.timeSinceBoot, serializer);
     sse_encode_list_disk_info(self.diskInfos, serializer);
     sse_encode_battery_info(self.batteryInfo, serializer);
   }

@@ -3,6 +3,7 @@ use std::{
     io::{BufRead, BufReader},
     path::{Path, PathBuf},
     process::{Command, Stdio},
+    time::{SystemTime, UNIX_EPOCH},
 };
 
 use anyhow::{anyhow, Result};
@@ -91,6 +92,36 @@ pub(crate) fn iconutil_convert<P: AsRef<Path>>(path: P) -> Result<()> {
     Ok(())
 }
 
+pub(crate) fn calculate_time_since_boot() -> Result<String> {
+    let output = Command::new("sysctl").arg("kern.boottime").output()?;
+    let result = String::from_utf8_lossy(&output.stdout).to_string();
+    // 截取 boot 时间戳
+    let sec = result
+        .split("sec = ")
+        .nth(1)
+        .and_then(|s| s.split(',').next())
+        .ok_or(anyhow!("Failed to parse kern.boottime"))?
+        .trim()
+        .parse::<u64>()?;
+    // 获取当前 UNIX 时间戳
+    let now = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs();
+
+    // 计算 uptime（当前时间 - boottime）
+    let uptime_seconds = now - sec;
+
+    // 转换为 天, 小时, 分钟, 秒
+    let days = uptime_seconds / 86400;
+    let hours = (uptime_seconds % 86400) / 3600;
+    let minutes = (uptime_seconds % 3600) / 60;
+    let seconds = uptime_seconds % 60;
+
+    // 格式化输出
+    Ok(format!(
+        "{} d, {} hr, {} min, {} sec",
+        days, hours, minutes, seconds
+    ))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -106,5 +137,11 @@ mod tests {
         let path = "/Applications/Visual Studio Code.app";
         let res = get_app_icon(path.to_string());
         iconutil_convert(&res.unwrap()).unwrap();
+    }
+
+    #[test]
+    fn test_calculate_time_since_boot() {
+        let res = calculate_time_since_boot();
+        println!("{}", res.unwrap());
     }
 }

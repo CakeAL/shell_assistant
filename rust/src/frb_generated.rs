@@ -599,6 +599,7 @@ impl SseDecode for crate::api::entity::SystemInfo {
         let mut var_totalMemory = <u64>::sse_decode(deserializer);
         let mut var_totalSwap = <u64>::sse_decode(deserializer);
         let mut var_sipStatus = <Option<String>>::sse_decode(deserializer);
+        let mut var_timeSinceBoot = <Option<String>>::sse_decode(deserializer);
         let mut var_diskInfos = <Vec<crate::api::entity::DiskInfo>>::sse_decode(deserializer);
         let mut var_batteryInfo = <crate::api::entity::BatteryInfo>::sse_decode(deserializer);
         return crate::api::entity::SystemInfo {
@@ -612,6 +613,7 @@ impl SseDecode for crate::api::entity::SystemInfo {
             total_memory: var_totalMemory,
             total_swap: var_totalSwap,
             sip_status: var_sipStatus,
+            time_since_boot: var_timeSinceBoot,
             disk_infos: var_diskInfos,
             battery_info: var_batteryInfo,
         };
@@ -748,6 +750,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::entity::SystemInfo {
             self.total_memory.into_into_dart().into_dart(),
             self.total_swap.into_into_dart().into_dart(),
             self.sip_status.into_into_dart().into_dart(),
+            self.time_since_boot.into_into_dart().into_dart(),
             self.disk_infos.into_into_dart().into_dart(),
             self.battery_info.into_into_dart().into_dart(),
         ]
@@ -905,6 +908,7 @@ impl SseEncode for crate::api::entity::SystemInfo {
         <u64>::sse_encode(self.total_memory, serializer);
         <u64>::sse_encode(self.total_swap, serializer);
         <Option<String>>::sse_encode(self.sip_status, serializer);
+        <Option<String>>::sse_encode(self.time_since_boot, serializer);
         <Vec<crate::api::entity::DiskInfo>>::sse_encode(self.disk_infos, serializer);
         <crate::api::entity::BatteryInfo>::sse_encode(self.battery_info, serializer);
     }

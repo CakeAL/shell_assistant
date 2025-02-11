@@ -64,6 +64,7 @@
   "rawMaxCapacity": "Raw max capacity",
   "hardwareBatteryPercentage": "Hardware battery percentage",
   "sipStatus": "SIP status",
+  "timeSinceBoot": "Time since boot",
   "otherFunctions": "Other functions",
   "openDynamicWallpapersFolder": "Open dynamic wallpapers folder",
   "openRecordingsFolder": "Open recordings folder",

@@ -9,6 +9,7 @@ pub struct SystemInfo {
     pub total_memory: u64,
     pub total_swap: u64,
     pub sip_status: Option<String>,
+    pub time_since_boot: Option<String>,
     pub disk_infos: Vec<DiskInfo>,
     pub battery_info: BatteryInfo,
 }

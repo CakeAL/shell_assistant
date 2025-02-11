@@ -9,7 +9,7 @@ use std::{
 use walkdir::WalkDir;
 
 use crate::api::entity::{DiskInfo, SystemInfo};
-use crate::api::util::get_battery_info;
+use crate::api::util::*;
 
 use super::util::{get_app_icon, iconutil_convert};
 
@@ -204,6 +204,7 @@ pub fn get_system_info() -> SystemInfo {
         total_memory: sys.total_memory(),
         total_swap: sys.total_swap(),
         sip_status,
+        time_since_boot: calculate_time_since_boot().ok(),
         disk_infos: disks,
         battery_info: get_battery_info().unwrap_or_default(),
     }
