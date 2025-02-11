@@ -11,6 +11,8 @@ use walkdir::WalkDir;
 use crate::api::entity::{DiskInfo, SystemInfo};
 use crate::api::util::get_battery_info;
 
+use super::util::{get_app_icon, iconutil_convert};
+
 #[flutter_rust_bridge::frb(sync)]
 pub fn execute_bypass_signature(path: String, password: String) -> String {
     let mut child = Command::new("sudo")
@@ -220,6 +222,16 @@ pub fn get_folder_size(path: String) -> u64 {
         .filter_map(|entry| fs::metadata(entry.path()).ok()) // 获取元数据
         .map(|metadata| metadata.len()) // 获取文件大小
         .sum()
+}
+
+#[flutter_rust_bridge::frb(sync)]
+pub fn get_icon_and_convert(path: String) -> Result<String, String> {
+    let icon_path = get_app_icon(path).map_err(|e| e.to_string())?;
+    iconutil_convert(&icon_path).map_err(|e| e.to_string())?;
+    icon_path
+        .to_str()
+        .map(String::from)
+        .ok_or_else(|| "No such icon path".to_string())
 }
 
 #[flutter_rust_bridge::frb(init)]

@@ -41,3 +41,6 @@ void openFolder({required String path}) =>
 
 BigInt getFolderSize({required String path}) =>
     RustLib.instance.api.crateApiCommandGetFolderSize(path: path);
+
+String getIconAndConvert({required String path}) =>
+    RustLib.instance.api.crateApiCommandGetIconAndConvert(path: path);

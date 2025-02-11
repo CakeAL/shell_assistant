@@ -1,7 +1,7 @@
 use std::{
     env, fs,
     io::{BufRead, BufReader},
-    path::PathBuf,
+    path::{Path, PathBuf},
     process::{Command, Stdio},
 };
 
@@ -61,10 +61,13 @@ pub(crate) fn get_battery_info() -> Option<BatteryInfo> {
     Some(battery_info)
 }
 
-pub(crate) fn get_app_icon(path: String) -> Result<()> {
-    let app_path = PathBuf::from(path).join("Contents");
-    let info_plist = app_path.join("Info.plist");
-    let icon_plist_value = Value::from_file(info_plist)?;
+pub(crate) fn get_app_icon(path: String) -> Result<PathBuf> {
+    let app_path = PathBuf::from(&path);
+    let app_name = Path::new(&path)
+        .file_stem()
+        .and_then(|name| name.to_str())
+        .ok_or(anyhow!("No such app name"))?;
+    let icon_plist_value = Value::from_file(app_path.join("Contents/Info.plist"))?;
     let icon_name = icon_plist_value
         .as_dictionary()
         .and_then(|dict| dict.get("CFBundleIconFile")?.as_string())
@@ -72,10 +75,19 @@ pub(crate) fn get_app_icon(path: String) -> Result<()> {
         .split('.')
         .next()
         .ok_or_else(|| anyhow!("No icon file name"))?;
-    let icon_path = app_path.join(format!("Resources/{icon_name}.icns"));
+    let icon_path = app_path.join(format!("Contents/Resources/{icon_name}.icns"));
     let home_dir = env::var("HOME")?;
-    let downloads_dir = PathBuf::from(home_dir).join(format!("Downloads/{icon_name}.icns"));
-    fs::copy(icon_path, downloads_dir)?;
+    let copied_icon_path = PathBuf::from(home_dir).join(format!("Downloads/{app_name}.icns"));
+    fs::copy(icon_path, &copied_icon_path)?;
+    Ok(copied_icon_path)
+}
+
+pub(crate) fn iconutil_convert<P: AsRef<Path>>(path: P) -> Result<()> {
+    let path = path.as_ref();
+    let _ = Command::new("iconutil")
+        .args(["--convert", "iconset"])
+        .arg(path)
+        .status()?;
     Ok(())
 }
 
@@ -91,8 +103,8 @@ mod tests {
 
     #[test]
     fn test_get_app_icon() {
-        let path = "/Applications/Loop.app";
+        let path = "/Applications/Visual Studio Code.app";
         let res = get_app_icon(path.to_string());
-        res.unwrap();
+        iconutil_convert(&res.unwrap()).unwrap();
     }
 }
