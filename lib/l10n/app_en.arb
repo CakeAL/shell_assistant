@@ -69,5 +69,7 @@
   "openDynamicWallpapersFolder": "Open dynamic wallpapers folder",
   "openRecordingsFolder": "Open recordings folder",
   "currentFolderSize": "Current folder size",
-  "folderPath": "Folder path"
+  "folderPath": "Folder path",
+  "extractAppIcon": "Extract App icon",
+  "extractAppIconDescription": "It can move the icon you selected into download folder, and convert it to iconset. (Only for macOS Apps, not iPadOS/iOS App) "
 }

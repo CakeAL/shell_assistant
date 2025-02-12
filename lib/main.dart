@@ -4,6 +4,7 @@ import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:provider/provider.dart';
 import 'package:shell_assistant/pages/bypass_signature.dart';
 import 'package:shell_assistant/pages/dock.dart';
+import 'package:shell_assistant/pages/extract_app_icon.dart';
 import 'package:shell_assistant/pages/other_functions.dart';
 import 'package:shell_assistant/pages/settings.dart';
 import 'package:shell_assistant/pages/system_information.dart';
@@ -121,6 +122,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: const Icon(FluentIcons.rectangle_shape),
                     title: Text(AppLocalizations.of(context)!.dock),
                     body: Dock()),
+                    PaneItem(
+                    icon: const Icon(FluentIcons.app_icon_default),
+                    title: Text(AppLocalizations.of(context)!.extractAppIcon),
+                    body: ExtractAppIcon()),
                 PaneItem(
                     icon: const Icon(FluentIcons.context_menu),
                     title: Text(AppLocalizations.of(context)!.otherFunctions),
