@@ -70,6 +70,11 @@
     "openRecordingsFolder": "打开录音文件夹",
     "currentFolderSize": "当前文件夹大小",
     "folderPath": "文件夹路径",
-      "extractAppIcon": "提取 app 图标",
-  "extractAppIconDescription": "可以用来提取你选择的 APP 的图标文件到下载文件夹中，并转换为 iconset。（仅适用于 macOS App，iPadOS/iOS App 不能用） "
-}
+    "extractAppIcon": "提取 app 图标",
+    "extractAppIconDescription": "可以用来提取你选择的 APP 的图标文件到下载文件夹中，并转换为 iconset。（仅适用于 macOS App，iPadOS/iOS App 不能用） ",
+    "preventAutoBoot": "阻止自动开机",
+    "preventAutoBootRequirements": "只能用于 macOS 15.0 及以上，且 CPU 应该是 M 系列的。",
+    "preventAutoBootUsage": "你需要选择你不想自动开机的情况，然后点击下方按钮。",
+    "openTheLaptopLid": "打开笔记本盖子",
+    "connectToThePower": "连接电源"
+  }

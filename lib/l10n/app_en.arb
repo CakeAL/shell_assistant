@@ -71,5 +71,10 @@
   "currentFolderSize": "Current folder size",
   "folderPath": "Folder path",
   "extractAppIcon": "Extract App icon",
-  "extractAppIconDescription": "It can move the icon you selected into download folder, and convert it to iconset. (Only for macOS Apps, not iPadOS/iOS App) "
+  "extractAppIconDescription": "It can move the icon you selected into download folder, and convert it to iconset. (Only for macOS Apps, not iPadOS/iOS App) ",
+  "preventAutoBoot": "Prevent auto boot",
+  "preventAutoBootRequirements": "Only for macOS 15.0 and above, and CPU should be M series. ",
+  "preventAutoBootUsage": "You should select the cases you don't want to auto boot, and press the button below. ",
+  "openTheLaptopLid": "Open the Laptop Lid",
+  "connectToThePower": "Connect to the power"
 }
