@@ -69,7 +69,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.6.0';
 
   @override
-  int get rustContentHash => -1033503407;
+  int get rustContentHash => 668360177;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -109,8 +109,8 @@ abstract class RustLibApi extends BaseApi {
 
   void crateApiCommandOpenFolder({required String path});
 
-  String crateApiCommandSetBootPreference(
-      {int? value, required String password});
+  String crateApiCommandSetNvram(
+      {required int function, int? value, required String password});
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -411,11 +411,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  String crateApiCommandSetBootPreference(
-      {int? value, required String password}) {
+  String crateApiCommandSetNvram(
+      {required int function, int? value, required String password}) {
     return handler.executeSync(SyncTask(
       callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_u_8(function, serializer);
         sse_encode_opt_box_autoadd_u_8(value, serializer);
         sse_encode_String(password, serializer);
         return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
@@ -424,16 +425,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeSuccessData: sse_decode_String,
         decodeErrorData: sse_decode_String,
       ),
-      constMeta: kCrateApiCommandSetBootPreferenceConstMeta,
-      argValues: [value, password],
+      constMeta: kCrateApiCommandSetNvramConstMeta,
+      argValues: [function, value, password],
       apiImpl: this,
     ));
   }
 
-  TaskConstMeta get kCrateApiCommandSetBootPreferenceConstMeta =>
-      const TaskConstMeta(
-        debugName: "set_boot_preference",
-        argNames: ["value", "password"],
+  TaskConstMeta get kCrateApiCommandSetNvramConstMeta => const TaskConstMeta(
+        debugName: "set_nvram",
+        argNames: ["function", "value", "password"],
       );
 
   @protected

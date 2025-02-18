@@ -1,6 +1,6 @@
 use std::{
     env, fs,
-    io::{BufRead, BufReader},
+    io::{BufRead, BufReader, Write},
     path::{Path, PathBuf},
     process::{Command, Stdio},
     time::{SystemTime, UNIX_EPOCH},
@@ -120,6 +120,29 @@ pub(crate) fn calculate_time_since_boot() -> Result<String> {
         "{} d, {} hr, {} min, {} sec",
         days, hours, minutes, seconds
     ))
+}
+
+pub(crate) fn execute_sudo_command(args: Vec<String>, password: String) -> Result<String, String> {
+    let mut child = Command::new("sudo")
+        .args(args)
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .map_err(|e| e.to_string())?;
+
+    if let Some(mut stdin) = child.stdin.take() {
+        stdin
+            .write_all(format!("{}\n", password).as_bytes())
+            .map_err(|e| e.to_string())?;
+    }
+
+    let result = child.wait_with_output();
+    match result {
+        Ok(output) if output.status.success() => Ok("Success".to_string()),
+        Ok(output) => Err(String::from_utf8_lossy(&output.stderr).to_string()),
+        Err(e) => Err(e.to_string()),
+    }
 }
 
 #[cfg(test)]

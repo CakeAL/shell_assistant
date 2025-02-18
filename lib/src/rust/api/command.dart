@@ -45,6 +45,7 @@ BigInt getFolderSize({required String path}) =>
 String getIconAndConvert({required String path}) =>
     RustLib.instance.api.crateApiCommandGetIconAndConvert(path: path);
 
-String setBootPreference({int? value, required String password}) =>
-    RustLib.instance.api
-        .crateApiCommandSetBootPreference(value: value, password: password);
+String setNvram(
+        {required int function, int? value, required String password}) =>
+    RustLib.instance.api.crateApiCommandSetNvram(
+        function: function, value: value, password: password);

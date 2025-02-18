@@ -1,10 +1,4 @@
-use std::{
-    collections::HashMap,
-    fs,
-    io::Write,
-    process::{Command, Stdio},
-    sync::LazyLock,
-};
+use std::{collections::HashMap, fs, process::Command, sync::LazyLock};
 
 use walkdir::WalkDir;
 
@@ -15,32 +9,14 @@ use super::util::{get_app_icon, iconutil_convert};
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn execute_bypass_signature(path: String, password: String) -> Result<String, String> {
-    let mut child = Command::new("sudo")
-        .arg("-S") // 从 stdin 读取密码
-        .arg("xattr")
-        .arg("-d")
-        .arg("com.apple.quarantine")
-        .arg(path)
-        .stdin(Stdio::piped()) // 启用标准输入
-        .stdout(Stdio::piped()) // 捕获输出
-        .stderr(Stdio::piped()) // 捕获标准错误
-        .spawn()
-        .map_err(|e| e.to_string())?;
-
-    // 将密码写入 sudo 的标准输入
-    if let Some(mut stdin) = child.stdin.take() {
-        stdin
-            .write_all(format!("{}\n", password).as_bytes())
-            .map_err(|e| e.to_string())?;
-    }
-
-    // 等待命令完成
-    let result = child.wait_with_output();
-    match result {
-        Ok(output) if output.status.success() => Ok("Success".to_string()),
-        Ok(output) => Err(String::from_utf8_lossy(&output.stderr).to_string()),
-        Err(e) => Err(e.to_string()),
-    }
+    let args = vec![
+        "-S".to_string(),
+        "xattr".to_string(),
+        "-d".to_string(),
+        "com.apple.quarantine".to_string(),
+        path.clone(),
+    ];
+    execute_sudo_command(args, password)
 }
 
 static SCREENSHOT_SETTINGS: LazyLock<Vec<&str>> = LazyLock::new(|| {
@@ -235,41 +211,27 @@ pub fn get_icon_and_convert(path: String) -> Result<String, String> {
         .ok_or_else(|| "No such icon path".to_string())
 }
 
+// function 0: sudo nvram BootPreference=%00
+// function 1: sudo nvram StartupMute=%00
 #[flutter_rust_bridge::frb(sync)]
-pub fn set_boot_preference(value: Option<u8>, password: String) -> Result<String, String> {
-    // sudo nvram BootPreference=%00
+pub fn set_nvram(function: u8, value: Option<u8>, password: String) -> Result<String, String> {
     let mut args = vec!["-S".to_string(), "nvram".to_string()];
-
+    let function = match function {
+        0 => "BootPreference",
+        1 => "StartupMute",
+        _ => return Err("Invalid function".to_string()),
+    };
     match value {
         Some(v) => {
-            let preference = format!("BootPreference=%{:02x}", v);
+            let preference = format!("{function}=%{:02x}", v);
             args.push(preference);
         }
         None => {
-            args.extend(vec!["-d".to_string(), "BootPreference".to_string()]);
+            args.extend(vec!["-d".to_string(), function.to_string()]);
         }
     }
 
-    let mut child = Command::new("sudo")
-        .args(args)
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .map_err(|e| e.to_string())?;
-
-    if let Some(mut stdin) = child.stdin.take() {
-        stdin
-            .write_all(format!("{}\n", password).as_bytes())
-            .map_err(|e| e.to_string())?;
-    }
-
-    let result = child.wait_with_output();
-    match result {
-        Ok(output) if output.status.success() => Ok("Success".to_string()),
-        Ok(output) => Err(String::from_utf8_lossy(&output.stderr).to_string()),
-        Err(e) => Err(e.to_string()),
-    }
+    execute_sudo_command(args, password)
 }
 
 #[flutter_rust_bridge::frb(init)]
@@ -315,7 +277,13 @@ mod tests {
 
     #[test]
     fn test_set_boot_preference() {
-        let res = set_boot_preference(None, "000000".to_string());
+        let res = set_nvram(0, None, "000000".to_string());
+        dbg!(res.unwrap());
+    }
+
+    #[test]
+    fn test_set_startup_mute() {
+        let res = set_nvram(1, Some(0), "000000".to_string());
         dbg!(res.unwrap());
     }
 }
