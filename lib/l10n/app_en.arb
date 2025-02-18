@@ -67,6 +67,7 @@
   "timeSinceBoot": "Time since boot",
   "otherFunctions": "Other functions",
   "openDynamicWallpapersFolder": "Open dynamic wallpapers folder",
+  "openWallpapersFolder": "Open wallpapers folder",
   "openRecordingsFolder": "Open recordings folder",
   "currentFolderSize": "Current folder size",
   "folderPath": "Folder path",
@@ -76,5 +77,6 @@
   "preventAutoBootRequirements": "Only for macOS 15.0 and above, and CPU should be M series. ",
   "preventAutoBootUsage": "You should select the cases you don't want to auto boot, and press the button below. ",
   "openTheLaptopLid": "Open the Laptop Lid",
-  "connectToThePower": "Connect to the power"
+  "connectToThePower": "Connect to the power",
+  "bootOptions": "启动选项"
 }

@@ -2,6 +2,7 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:provider/provider.dart';
+import 'package:shell_assistant/pages/boot_options.dart';
 import 'package:shell_assistant/pages/bypass_signature.dart';
 import 'package:shell_assistant/pages/dock.dart';
 import 'package:shell_assistant/pages/extract_app_icon.dart';
@@ -126,6 +127,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: const Icon(FluentIcons.app_icon_default),
                     title: Text(AppLocalizations.of(context)!.extractAppIcon),
                     body: ExtractAppIcon()),
+                    PaneItem(
+                    icon: const Icon(FluentIcons.power_button),
+                    title: Text(AppLocalizations.of(context)!.bootOptions),
+                    body: BootOptions()),
                 PaneItem(
                     icon: const Icon(FluentIcons.context_menu),
                     title: Text(AppLocalizations.of(context)!.otherFunctions),

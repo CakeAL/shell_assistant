@@ -67,6 +67,7 @@
     "timeSinceBoot": "已开机时间",
     "otherFunctions": "其他功能",
     "openDynamicWallpapersFolder": "打开动态壁纸文件夹",
+    "openWallpapersFolder": "打开壁纸文件夹",
     "openRecordingsFolder": "打开录音文件夹",
     "currentFolderSize": "当前文件夹大小",
     "folderPath": "文件夹路径",
@@ -76,5 +77,6 @@
     "preventAutoBootRequirements": "只能用于 macOS 15.0 及以上，且 CPU 应该是 M 系列的。",
     "preventAutoBootUsage": "你需要选择你不想自动开机的情况，然后点击下方按钮。",
     "openTheLaptopLid": "打开笔记本盖子",
-    "connectToThePower": "连接电源"
+    "connectToThePower": "连接电源",
+    "bootOptions": "启动选项"
   }
