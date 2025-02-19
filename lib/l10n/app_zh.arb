@@ -78,5 +78,6 @@
     "preventAutoBootUsage": "你需要选择你不想自动开机的情况，然后点击下方按钮。",
     "openTheLaptopLid": "打开笔记本盖子",
     "connectToThePower": "连接电源",
-    "bootOptions": "启动选项"
+    "bootOptions": "启动选项",
+    "playSoundOnStartup": "开机发出 Duang 的一声"
   }

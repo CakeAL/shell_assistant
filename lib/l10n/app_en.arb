@@ -78,5 +78,6 @@
   "preventAutoBootUsage": "You should select the cases you don't want to auto boot, and press the button below. ",
   "openTheLaptopLid": "Open the Laptop Lid",
   "connectToThePower": "Connect to the power",
-  "bootOptions": "启动选项"
-}
+  "bootOptions": "Boot options",
+  "playSoundOnStartup": "Play sound on startup"
+} 

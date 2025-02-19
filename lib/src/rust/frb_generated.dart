@@ -5,6 +5,7 @@
 
 import 'api/command.dart';
 import 'api/entity.dart';
+import 'api/read_value.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -69,7 +70,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.6.0';
 
   @override
-  int get rustContentHash => 668360177;
+  int get rustContentHash => -1917915625;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -108,6 +109,8 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiCommandInitApp();
 
   void crateApiCommandOpenFolder({required String path});
+
+  int? crateApiReadValueReadNvramValue({required int function});
 
   String crateApiCommandSetNvram(
       {required int function, int? value, required String password});
@@ -411,6 +414,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  int? crateApiReadValueReadNvramValue({required int function}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_u_8(function, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_opt_box_autoadd_u_8,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiReadValueReadNvramValueConstMeta,
+      argValues: [function],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiReadValueReadNvramValueConstMeta =>
+      const TaskConstMeta(
+        debugName: "read_nvram_value",
+        argNames: ["function"],
+      );
+
+  @override
   String crateApiCommandSetNvram(
       {required int function, int? value, required String password}) {
     return handler.executeSync(SyncTask(
@@ -419,7 +446,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_u_8(function, serializer);
         sse_encode_opt_box_autoadd_u_8(value, serializer);
         sse_encode_String(password, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,

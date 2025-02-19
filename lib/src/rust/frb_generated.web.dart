@@ -8,6 +8,7 @@
 
 import 'api/command.dart';
 import 'api/entity.dart';
+import 'api/read_value.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';

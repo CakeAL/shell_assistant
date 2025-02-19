@@ -7,7 +7,7 @@ class ExpandCard extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.content,
-    required this.path,
+    this.path,
     this.initiallyExpanded = false,
   });
 
