@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shell_assistant/src/rust/api/command.dart';
 import 'package:shell_assistant/widgets/app_drop_region.dart';
+import 'package:shell_assistant/widgets/dialog_helper.dart';
 import 'package:shell_assistant/widgets/file_picker_box.dart';
 import 'package:shell_assistant/widgets/open_to_see.dart';
 
@@ -34,51 +35,23 @@ class _BypassSignatureState extends State<BypassSignature> {
     super.dispose();
   }
 
-  void _showPasswordDialog(BuildContext context) async {
-    if (_controller.text.isEmpty) {
-      return;
-    }
-    await showDialog<String>(
-        context: context,
-        builder: (context) => ContentDialog(
-              title: Text(AppLocalizations.of(context)!.enterPassword),
-              content: SizedBox(
-                height: 30,
-                child: PasswordBox(
-                  controller: _password,
-                ),
-              ),
-              actions: [
-                Button(
-                  child: Text(AppLocalizations.of(context)!.cancel),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                FilledButton(
-                  child: Text(AppLocalizations.of(context)!.submit),
-                  onPressed: () {
-                    _executeCommand();
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ));
-  }
-
   Future<void> _executeCommand() async {
     InfoBarSeverity severity = InfoBarSeverity.error;
     // debugPrint(_controller.text);
-    String text = executeBypassSignature(
-        path: _controller.text, password: _password.text);
-    _password.text = "";
+    String text;
+    try {
+      text = executeBypassSignature(
+          path: _controller.text, password: _password.text);
+    } catch (e) {
+      text = e.toString();
+    }
+    // _password.text = "";
     debugPrint(text);
     if (text == "Success" ||
         text.contains("No such xattr: com.apple.quarantine")) {
       text = "Success";
       severity = InfoBarSeverity.success;
     }
-    // debugPrint(text);
     await displayInfoBar(context, builder: (context, close) {
       return InfoBar(
         title: Text(text),
@@ -107,7 +80,12 @@ class _BypassSignatureState extends State<BypassSignature> {
             Expanded(
                 child: FilledButton(
               child: Text(AppLocalizations.of(context)!.submit),
-              onPressed: () => _showPasswordDialog(context),
+              onPressed: () {
+                if (_controller.text.isNotEmpty) {
+                  DialogHelper.showPasswordDialog(
+                      context, _password, _executeCommand);
+                }
+              },
             ))
           ],
         )
