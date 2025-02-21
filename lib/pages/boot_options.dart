@@ -1,6 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shell_assistant/src/rust/api/command.dart';
 import 'package:shell_assistant/src/rust/api/read_value.dart';
+import 'package:shell_assistant/widgets/dialog_helper.dart';
 import 'package:shell_assistant/widgets/expand_card.dart';
 
 class BootOptions extends StatefulWidget {
@@ -14,6 +16,7 @@ class _BootOptionsState extends State<BootOptions> {
   bool _openTheLaptopLid = false;
   bool _connectToThePower = false;
   bool _playSoundOnStartup = true;
+  final _password = TextEditingController();
 
   @override
   void initState() {
@@ -63,9 +66,33 @@ class _BootOptionsState extends State<BootOptions> {
                       ]),
                   Spacer(),
                   FilledButton(
-                    child: Text(AppLocalizations.of(context)!.submit),
-                    onPressed: () => {},
-                  )
+                      child: Text(AppLocalizations.of(context)!.submit),
+                      onPressed: () => DialogHelper.showPasswordDialog(
+                              context, _password, () async {
+                            int? value =
+                                (_openTheLaptopLid && _connectToThePower)
+                                    ? 0
+                                    : (_openTheLaptopLid)
+                                        ? 1
+                                        : (_connectToThePower)
+                                            ? 2
+                                            : null;
+                            final res = setNvram(
+                                function: 0,
+                                password: _password.text,
+                                value: value);
+                            await displayInfoBar(context,
+                                builder: (context, close) {
+                              return InfoBar(
+                                title: Text(res),
+                                action: IconButton(
+                                  icon: const Icon(FluentIcons.clear),
+                                  onPressed: close,
+                                ),
+                                severity: InfoBarSeverity.success,
+                              );
+                            });
+                          }))
                 ],
               )
             ])),
@@ -80,7 +107,24 @@ class _BootOptionsState extends State<BootOptions> {
           padding: const EdgeInsets.only(left: 30),
           child: ToggleSwitch(
             checked: _playSoundOnStartup,
-            onChanged: (v) => setState(() => _playSoundOnStartup = v),
+            onChanged: (v) {
+              setState(() => _playSoundOnStartup = v);
+              DialogHelper.showPasswordDialog(context, _password, () async {
+                int? value = _playSoundOnStartup == true ? 0 : 1;
+                final res = setNvram(
+                    function: 1, password: _password.text, value: value);
+                await displayInfoBar(context, builder: (context, close) {
+                  return InfoBar(
+                    title: Text(res),
+                    action: IconButton(
+                      icon: const Icon(FluentIcons.clear),
+                      onPressed: close,
+                    ),
+                    severity: InfoBarSeverity.success,
+                  );
+                });
+              });
+            },
             content: Text("Duang"),
           ),
         ),
