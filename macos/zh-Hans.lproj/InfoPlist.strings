@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by CakeAL on 2025/2/22.
+  
+*/
+CFBundleName = "果壳助手";
+CFBundleDisplayName = "果壳助手";
