@@ -1,13 +1,13 @@
 [package]
 name = "rust_lib_shell_assistant"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-flutter_rust_bridge = "=2.6.0"
+flutter_rust_bridge = "=2.8.0"
 sysinfo = "0.33.1"
 walkdir = "2.5.0"
 plist = "1.7.0"
