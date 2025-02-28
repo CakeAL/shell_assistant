@@ -123,11 +123,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: const Icon(FluentIcons.rectangle_shape),
                     title: Text(AppLocalizations.of(context)!.dock),
                     body: Dock()),
-                    PaneItem(
+                PaneItem(
                     icon: const Icon(FluentIcons.app_icon_default),
                     title: Text(AppLocalizations.of(context)!.extractAppIcon),
                     body: ExtractAppIcon()),
-                    PaneItem(
+                PaneItem(
                     icon: const Icon(FluentIcons.power_button),
                     title: Text(AppLocalizations.of(context)!.bootOptions),
                     body: BootOptions()),
