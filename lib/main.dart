@@ -1,6 +1,7 @@
 import 'package:desktop_window/desktop_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shell_assistant/pages/boot_options.dart';
 import 'package:shell_assistant/pages/bypass_signature.dart';
@@ -11,6 +12,7 @@ import 'package:shell_assistant/pages/settings.dart';
 import 'package:shell_assistant/pages/system_information.dart';
 import 'package:shell_assistant/pages/system_screenshot.dart';
 import 'package:shell_assistant/src/rust/api/command.dart';
+import 'package:shell_assistant/src/rust/api/updater.dart';
 import 'package:shell_assistant/src/rust/frb_generated.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shell_assistant/theme.dart';
@@ -27,7 +29,19 @@ Future<void> main() async {
   await Window.makeTitlebarTransparent();
   await Window.enableFullSizeContentView();
   // await Window.hideTitle();
+  checkForUpdate();
   runApp(const MyApp());
+}
+
+void checkForUpdate() async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  String curVersion = packageInfo.version;
+  checkUpdate(
+      curVersion: curVersion,
+      callback: (releaseInfo) {
+        debugPrint(releaseInfo!.tagName);
+        debugPrint(releaseInfo.body);
+      });
 }
 
 final _appTheme = AppTheme();

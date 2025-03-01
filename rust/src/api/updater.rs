@@ -1,12 +1,34 @@
 use std::time::Duration;
 
 use anyhow::Result;
+use flutter_rust_bridge::DartFnFuture;
 use reqwest::Client;
+use semver::Version;
 
-#[derive(Debug)]
-pub struct ReleaseInfo {
-    pub tag_name: String,
-    pub body: String,
+use super::entity::ReleaseInfo;
+
+static GITHUB_RELEASE_API: &str =
+    "https://api.github.com/repos/CakeAL/ustb-wifi-tools/releases/latest";
+
+pub async fn check_update(
+    cur_version: String,
+    callback: impl Fn(Option<ReleaseInfo>) -> DartFnFuture<()>,
+) {
+    let cur_version = Version::parse(&cur_version).unwrap_or(Version::new(0, 0, 0));
+    let lastest_release_info =
+        get_latest_release_info(GITHUB_RELEASE_API)
+            .await
+            .unwrap_or(ReleaseInfo {
+                tag_name: "v0.0.0".to_string(),
+                body: "".to_string(),
+            });
+    let lastest_version = Version::parse(&lastest_release_info.tag_name.trim_start_matches('v'))
+        .unwrap_or(Version::new(0, 0, 0));
+    if lastest_version > cur_version {
+        callback(Some(lastest_release_info)).await;
+    } else {
+        callback(None).await;
+    }
 }
 
 pub(crate) async fn get_latest_release_info(url: &str) -> Result<ReleaseInfo> {

@@ -8,6 +8,8 @@ PODS:
     - FlutterMacOS
   - macos_window_utils (1.0.0):
     - FlutterMacOS
+  - package_info_plus (0.0.1):
+    - FlutterMacOS
   - rust_lib_shell_assistant (0.0.1):
     - FlutterMacOS
   - shared_preferences_foundation (0.0.1):
@@ -24,6 +26,7 @@ DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
   - irondash_engine_context (from `Flutter/ephemeral/.symlinks/plugins/irondash_engine_context/macos`)
   - macos_window_utils (from `Flutter/ephemeral/.symlinks/plugins/macos_window_utils/macos`)
+  - package_info_plus (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos`)
   - rust_lib_shell_assistant (from `Flutter/ephemeral/.symlinks/plugins/rust_lib_shell_assistant/macos`)
   - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin`)
   - super_native_extensions (from `Flutter/ephemeral/.symlinks/plugins/super_native_extensions/macos`)
@@ -40,6 +43,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/irondash_engine_context/macos
   macos_window_utils:
     :path: Flutter/ephemeral/.symlinks/plugins/macos_window_utils/macos
+  package_info_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos
   rust_lib_shell_assistant:
     :path: Flutter/ephemeral/.symlinks/plugins/rust_lib_shell_assistant/macos
   shared_preferences_foundation:
@@ -55,6 +60,7 @@ SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   irondash_engine_context: 893c7d96d20ce361d7e996f39d360c4c2f9869ba
   macos_window_utils: 3bca8603c2a1cf2257351dfe6bbccc9accf739fd
+  package_info_plus: f0052d280d17aa382b932f399edf32507174e870
   rust_lib_shell_assistant: fd9ea317a54ce67618fe8a4e446138076846b291
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
   super_native_extensions: c2795d6d9aedf4a79fae25cb6160b71b50549189

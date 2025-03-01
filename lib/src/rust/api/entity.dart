@@ -6,7 +6,7 @@
 import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `fmt`, `fmt`
 
 class BatteryInfo {
   final int currentCapacity;
@@ -83,6 +83,30 @@ class DiskInfo {
           removable == other.removable &&
           totalSpace == other.totalSpace &&
           availableSpace == other.availableSpace;
+}
+
+class ReleaseInfo {
+  final String tagName;
+  final String body;
+
+  const ReleaseInfo({
+    required this.tagName,
+    required this.body,
+  });
+
+  static Future<ReleaseInfo> default_() =>
+      RustLib.instance.api.crateApiEntityReleaseInfoDefault();
+
+  @override
+  int get hashCode => tagName.hashCode ^ body.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReleaseInfo &&
+          runtimeType == other.runtimeType &&
+          tagName == other.tagName &&
+          body == other.body;
 }
 
 class SystemInfo {

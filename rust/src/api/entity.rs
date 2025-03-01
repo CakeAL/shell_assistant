@@ -33,3 +33,9 @@ pub struct BatteryInfo {
     pub design_capacity: i32,
     pub apple_raw_max_capacity: i32,
 }
+
+#[derive(Debug, Default)]
+pub struct ReleaseInfo {
+    pub tag_name: String,
+    pub body: String,
+}
