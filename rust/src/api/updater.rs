@@ -8,7 +8,7 @@ use semver::Version;
 use super::entity::ReleaseInfo;
 
 static GITHUB_RELEASE_API: &str =
-    "https://api.github.com/repos/CakeAL/ustb-wifi-tools/releases/latest";
+    "https://api.github.com/repos/CakeAL/shell_assistant/releases/latest";
 
 pub async fn check_update(
     cur_version: String,
@@ -61,10 +61,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_latest_release_info() {
-        let release_info = get_latest_release_info(
-            "https://api.github.com/repos/CakeAL/ustb-wifi-tools/releases/latest",
-        )
-        .await;
+        let release_info = get_latest_release_info(GITHUB_RELEASE_API).await;
         dbg!(release_info.unwrap());
     }
 }

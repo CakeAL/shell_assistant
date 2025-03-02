@@ -17,6 +17,7 @@ import 'package:shell_assistant/src/rust/frb_generated.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shell_assistant/theme.dart';
 import 'package:system_theme/system_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<void> main() async {
   await RustLib.init();
@@ -29,19 +30,7 @@ Future<void> main() async {
   await Window.makeTitlebarTransparent();
   await Window.enableFullSizeContentView();
   // await Window.hideTitle();
-  checkForUpdate();
   runApp(const MyApp());
-}
-
-void checkForUpdate() async {
-  PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  String curVersion = packageInfo.version;
-  checkUpdate(
-      curVersion: curVersion,
-      callback: (releaseInfo) {
-        debugPrint(releaseInfo!.tagName);
-        debugPrint(releaseInfo.body);
-      });
 }
 
 final _appTheme = AppTheme();
@@ -98,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _userName = getUserName();
+    checkForUpdate();
   }
 
   @override
@@ -161,5 +151,52 @@ class _MyHomePageState extends State<MyHomePage> {
                     body: Settings())
               ]));
     });
+  }
+
+  void checkForUpdate() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String curVersion = packageInfo.version;
+    checkUpdate(
+        curVersion: curVersion,
+        callback: (releaseInfo) async {
+          if (releaseInfo != null) {
+            await showDialog<String>(
+                context: context,
+                builder: (context) => ContentDialog(
+                      title:
+                          Text(AppLocalizations.of(context)!.newVersionFound),
+                      content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Version: $curVersion -> ${releaseInfo.tagName}",
+                              style:
+                                  FluentTheme.of(context).typography.subtitle,
+                            ),
+                            Text(
+                              "Content:",
+                              style:
+                                  FluentTheme.of(context).typography.subtitle,
+                            ),
+                            Text(releaseInfo.body),
+                          ]),
+                      actions: [
+                        Button(
+                          child: Text(AppLocalizations.of(context)!.cancel),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        FilledButton(
+                          child: Text(
+                              AppLocalizations.of(context)!.openReleasePage),
+                          onPressed: () async {
+                            Navigator.pop(context);
+                            await launchUrl(Uri.parse(
+                                "https://github.com/CakeAL/shell_assistant/releases/latest"));
+                          },
+                        ),
+                      ],
+                    ));
+          }
+        });
   }
 }

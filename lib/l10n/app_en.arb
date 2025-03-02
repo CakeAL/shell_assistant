@@ -79,5 +79,7 @@
   "openTheLaptopLid": "Open the Laptop Lid",
   "connectToThePower": "Connect to the power",
   "bootOptions": "Boot options",
-  "playSoundOnStartup": "Play sound on startup"
+  "playSoundOnStartup": "Play sound on startup",
+  "newVersionFound": "New version found",
+  "openReleasePage": "Open release page"
 } 
