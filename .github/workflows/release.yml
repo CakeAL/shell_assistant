@@ -1,0 +1,113 @@
+name: "release"
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    outputs:
+      changes: ${{ steps.changelog_reader.outputs.changes }}
+      version: ${{ steps.get_version.outputs.VERSION }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get Version number
+        id: get_version
+        run: |
+          VERSION=$(yq eval -r '.version' pubspec.yaml)
+          echo $VERSION
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+      - name: Changelog Reader
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          path: "CHANGELOG.md"
+          version: ${{ steps.get_version.outputs.VERSION }}
+  build:
+    name: Build macOS App
+    runs-on: macos-latest
+    needs: changelog
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+          cache: true
+      - name: Install Dependencies
+        run: flutter pub get
+      - name: Install create-dmg
+        run: brew install create-dmg
+      - name: Enable macOS Support
+        run: flutter config --enable-macos-desktop
+      - name: Build macOS x86_64
+        run: flutter build macos --release --darwin-archs=x86_64
+      - name: Rename x86_64 Build
+        run: mv "build/macos/Build/Products/Release/Shell Assistant.app" "build/macos/Build/Products/Release/Shell Assistant-x86_64.app"
+      - name: Package x86_64 as DMG
+        run: |
+          create-dmg \
+            --volname "Shell Assistant-x86_64" \
+            --background "pic/bg.svg" \
+            --window-pos 400 200 \
+            --window-size 660 400 \
+            --icon-size 100 \
+            --icon "Shell Assistant-x86_64.app" 160 185 \
+            --hide-extension "Shell Assistant-x86_64.app" \
+            --app-drop-link 500 185 \
+            "Shell Assistant-x86_64.dmg" \
+            "build/macos/Build/Products/Release/Shell Assistant-x86_64.app"
+      - name: Build macOS arm64
+        run: flutter build macos --release --darwin-archs=arm64
+      - name: Rename arm64 Build
+        run: mv "build/macos/Build/Products/Release/Shell Assistant.app" "build/macos/Build/Products/Release/Shell Assistant-arm64.app"
+      - name: Package arm64 as DMG
+        run: |
+          create-dmg \
+            --volname "Shell Assistant-arm64" \
+            --background "pic/bg.svg" \
+            --window-pos 400 200 \
+            --window-size 660 400 \
+            --icon-size 100 \
+            --icon "Shell Assistant-arm64.app" 160 185 \
+            --hide-extension "Shell Assistant-arm64.app" \
+            --app-drop-link 500 185 \
+            "Shell Assistant-arm64.dmg" \
+            "build/macos/Build/Products/Release/Shell Assistant-arm64.app"
+      - name: Upload x86_64 Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS-x86_64
+          path: "Shell Assistant-x86_64.dmg"
+      - name: Upload arm64 Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS-arm64
+          path: "Shell Assistant-arm64.dmg"
+  release:
+    name: Create Release
+    needs: [changelog, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download x86_64 DMG
+        uses: actions/download-artifact@v4
+        with:
+          name: macOS-x86_64
+          path: dmgs
+      - name: Download arm64 DMG
+        uses: actions/download-artifact@v4
+        with:
+          name: macOS-arm64
+          path: dmgs
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ needs.changelog.outputs.changes }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            "dmgs/Shell Assistant-x86_64.dmg"
+            "dmgs/Shell Assistant-arm64.dmg"
+          draft: true
