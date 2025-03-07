@@ -22,6 +22,7 @@ rm -rf release
 
 mkdir -p release/arm
 mkdir -p release/x86
+mkdir -p release/dmgs
 
 # 构建 x86_64 版本
 modify_xcode_arch "x86_64"
