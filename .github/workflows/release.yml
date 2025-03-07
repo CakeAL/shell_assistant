@@ -25,9 +25,9 @@ jobs:
         with:
           path: "CHANGELOG.md"
           version: ${{ steps.get_version.outputs.VERSION }}
-  build-x86:
-    name: Build x86_64
-    runs-on: macos-14-large
+  build:
+    name: Build releases
+    runs-on: macos-latest
     needs: changelog
     steps:
       - name: Checkout Repository
@@ -43,46 +43,8 @@ jobs:
         run: brew install create-dmg
       - name: Enable macOS Support
         run: flutter config --enable-macos-desktop
-      - name: Build macOS x86_64
-        run: flutter build macos --release
-      - name: Package x86_64 as DMG
-        run: |
-          create-dmg \
-            --volname "Shell Assistant" \
-            --background "pic/bg.svg" \
-            --window-pos 400 200 \
-            --window-size 660 400 \
-            --icon-size 100 \
-            --icon "Shell Assistant.app" 160 185 \
-            --hide-extension "Shell Assistant.app" \
-            --app-drop-link 500 185 \
-            "Shell Assistant-x86_64.dmg" \
-            "build/macos/Build/Products/Release/Shell Assistant.app"
-      - name: Upload x86_64 Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: macOS-x86_64
-          path: "Shell Assistant-x86_64.dmg"
-  build-arm64:
-    name: Build arm64
-    runs-on: macos-14
-    needs: changelog
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: 3.x
-      - name: Install Dependencies
-        run: flutter pub get
-      - name: Install create-dmg
-        run: brew install create-dmg
-      - name: Enable macOS Support
-        run: flutter config --enable-macos-desktop
-      - name: Build macOS arm64
-        run: flutter build macos --release
+      - name: Build releases
+        run: chmod +x build_releases.sh && ./build_releases.sh
       - name: Package arm64 as DMG
         run: |
           create-dmg \
@@ -95,26 +57,36 @@ jobs:
             --hide-extension "Shell Assistant.app" \
             --app-drop-link 500 185 \
             "Shell Assistant-arm64.dmg" \
-            "build/macos/Build/Products/Release/Shell Assistant.app"
+            "release/arm/Shell Assistant.app"
+      - name: Package x86_64 as DMG
+        run: |
+          create-dmg \
+            --volname "Shell Assistant" \
+            --background "pic/bg.svg" \
+            --window-pos 400 200 \
+            --window-size 660 400 \
+            --icon-size 100 \
+            --icon "Shell Assistant.app" 160 185 \
+            --hide-extension "Shell Assistant.app" \
+            --app-drop-link 500 185 \
+            "Shell Assistant-x86_64.dmg" \
+            "release/x86/Shell Assistant.app"
       - name: Upload arm64 Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: macOS-aarch
-          path: "Shell Assistant-arm64.dmg"
+          name: macOS-dmgs
+          path: | 
+            "Shell Assistant-arm64.dmg"
+            "Shell Assistant-x86_64.dmg"
   release:
     name: Create Release
-    needs: [changelog, build-x86, build-arm64]
+    needs: [changelog, build]
     runs-on: ubuntu-latest
     steps:
-      - name: Download x86_64 DMG
+      - name: Download macOS DMG
         uses: actions/download-artifact@v4
         with:
-          name: macOS-x86_64
-          path: dmgs
-      - name: Download arm64 DMG
-        uses: actions/download-artifact@v4
-        with:
-          name: macOS-arm64
+          name: macOS-dmgs
           path: dmgs
       - name: Publish Release
         uses: softprops/action-gh-release@v2
