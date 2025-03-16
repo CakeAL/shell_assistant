@@ -1,4 +1,4 @@
-import 'package:file_picker/file_picker.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shell_assistant/src/rust/api/command.dart';
@@ -63,12 +63,12 @@ class _SystemScreenshotState extends State<SystemScreenshot> {
   }
 
   Future<void> _pickDir() async {
-    String result = await FilePicker.platform.getDirectoryPath() ?? "";
+    final String? directoryPath = await getDirectoryPath();
     // 去除不需要的前缀部分，假设路径以 '/Volumes/Macintosh HD' 开头
-    if (result.startsWith('/Volumes/Macintosh HD')) {
-      result = result.replaceFirst('/Volumes/Macintosh HD', '');
-    }
-    _screenshotSavedFolder.text = result;
+    // if (result.startsWith('/Volumes/Macintosh HD')) {
+    //   result = result.replaceFirst('/Volumes/Macintosh HD', '');
+    // }
+    _screenshotSavedFolder.text = directoryPath ?? "";
   }
 
   void _showInfoBar() async {

@@ -1,27 +1,20 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:file_selector/file_selector.dart';
 
 class FilePickerBox extends StatelessWidget {
   final TextEditingController controller;
   const FilePickerBox({super.key, required this.controller});
 
   Future<void> _pickDir() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
-      type: FileType.custom,
-      allowedExtensions: ['app'],
+    const XTypeGroup typeGroup = XTypeGroup(
+        label: 'application',
+        uniformTypeIdentifiers: <String>["com.apple.application-bundle"]);
+    final XFile? appPath = await openFile(
+      acceptedTypeGroups: <XTypeGroup>[typeGroup],
       initialDirectory: "/Applications",
+      confirmButtonText: "Select an App",
     );
-    if (result != null) {
-      String pickedPath = result.paths.first ?? "";
-      // 去除不需要的前缀部分，假设路径以 '/Volumes/Macintosh HD' 开头
-      if (pickedPath.startsWith('/Volumes/Macintosh HD')) {
-        pickedPath = pickedPath.replaceFirst('/Volumes/Macintosh HD', '');
-      }
-      controller.text = pickedPath;
-    } else {
-      debugPrint("User cancelled the folder picker");
-    }
+    controller.text = appPath?.path ?? "";
   }
 
   @override
