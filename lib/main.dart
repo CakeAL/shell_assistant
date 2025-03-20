@@ -7,6 +7,7 @@ import 'package:shell_assistant/pages/boot_options.dart';
 import 'package:shell_assistant/pages/bypass_signature.dart';
 import 'package:shell_assistant/pages/dock.dart';
 import 'package:shell_assistant/pages/extract_app_icon.dart';
+import 'package:shell_assistant/pages/get_app_arch.dart';
 import 'package:shell_assistant/pages/other_functions.dart';
 import 'package:shell_assistant/pages/settings.dart';
 import 'package:shell_assistant/pages/system_information.dart';
@@ -131,6 +132,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: const Icon(FluentIcons.app_icon_default),
                     title: Text(AppLocalizations.of(context)!.extractAppIcon),
                     body: ExtractAppIcon()),
+                PaneItem(
+                icon: const Icon(FluentIcons.search_and_apps),
+                    title: Text(AppLocalizations.of(context)!.getAppArch),
+                    body: GetAppArch()),
                 PaneItem(
                     icon: const Icon(FluentIcons.power_button),
                     title: Text(AppLocalizations.of(context)!.bootOptions),

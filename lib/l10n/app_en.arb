@@ -81,5 +81,11 @@
   "bootOptions": "Boot options",
   "playSoundOnStartup": "Play sound on startup",
   "newVersionFound": "New version found",
-  "openReleasePage": "Open release page"
+  "openReleasePage": "Open release page",
+  "getAppArch": "Get App architecture",
+  "appArchs": "This App's architecture is",
+  "universal": "This app is a universal app and can run on both Intel Chip and Apple Silicon macOS.",
+  "onlyArm": "This app is an arm64 app and can only run on Apple Silicon macOS.",
+  "onlyIntel": "This app is a x86_64 app and can run on both Intel Chip and Apple Silicon macOS (via Rosetta 2).",
+  "onlyPowerPC": "This app is a PowerPC app and can't run nowadays anymore."
 } 

@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::{collections::HashMap, fs, process::Command, sync::LazyLock};
 
 use walkdir::WalkDir;
@@ -236,23 +237,23 @@ pub fn set_nvram(function: u8, value: Option<u8>, password: String) -> Result<St
 }
 
 #[flutter_rust_bridge::frb(sync)]
-pub fn get_app_arch(path: String) -> Result<Vec<Architecture>, String> {
+pub fn get_app_arch(path: String) -> Result<HashSet<Architecture>, String> {
     let executable_file_path = get_executable_file_path(&path).map_err(|e| e.to_string())?;
     let res = Command::new("file")
         .arg(executable_file_path.to_str().unwrap_or_default())
         .output()
         .ok()
         .and_then(|output| Some(String::from_utf8_lossy(&output.stdout).trim().to_string()));
-    let mut archs = Vec::new();
+    let mut archs = HashSet::new();
     if let Some(res) = res {
         if res.contains("x86_64") {
-            archs.push(Architecture::X86_64);
+            archs.insert(Architecture::X86_64);
         }
         if res.contains("arm64") {
-            archs.push(Architecture::Arm64);
+            archs.insert(Architecture::Arm64);
         }
         if res.contains("PowerPC") {
-            archs.push(Architecture::PowerPC);
+            archs.insert(Architecture::PowerPC);
         }
     }
     Ok(archs)

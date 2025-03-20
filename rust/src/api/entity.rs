@@ -40,7 +40,7 @@ pub struct ReleaseInfo {
     pub body: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Hash)]
 pub enum Architecture {
     X86_64,
     Arm64,

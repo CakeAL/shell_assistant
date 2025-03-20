@@ -36,7 +36,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Map<int, String> dco_decode_Map_i_32_String(dynamic raw);
 
   @protected
+  Set<Architecture> dco_decode_Set_architecture(dynamic raw);
+
+  @protected
   String dco_decode_String(dynamic raw);
+
+  @protected
+  Architecture dco_decode_architecture(dynamic raw);
 
   @protected
   BatteryInfo dco_decode_battery_info(dynamic raw);
@@ -64,6 +70,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PlatformInt64 dco_decode_isize(dynamic raw);
+
+  @protected
+  List<Architecture> dco_decode_list_architecture(dynamic raw);
 
   @protected
   List<bool> dco_decode_list_bool(dynamic raw);
@@ -120,7 +129,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Map<int, String> sse_decode_Map_i_32_String(SseDeserializer deserializer);
 
   @protected
+  Set<Architecture> sse_decode_Set_architecture(SseDeserializer deserializer);
+
+  @protected
   String sse_decode_String(SseDeserializer deserializer);
+
+  @protected
+  Architecture sse_decode_architecture(SseDeserializer deserializer);
 
   @protected
   BatteryInfo sse_decode_battery_info(SseDeserializer deserializer);
@@ -148,6 +163,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   PlatformInt64 sse_decode_isize(SseDeserializer deserializer);
+
+  @protected
+  List<Architecture> sse_decode_list_architecture(SseDeserializer deserializer);
 
   @protected
   List<bool> sse_decode_list_bool(SseDeserializer deserializer);
@@ -213,7 +231,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Map<int, String> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_Set_architecture(
+      Set<Architecture> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_String(String self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_architecture(Architecture self, SseSerializer serializer);
 
   @protected
   void sse_encode_battery_info(BatteryInfo self, SseSerializer serializer);
@@ -242,6 +267,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_isize(PlatformInt64 self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_architecture(
+      List<Architecture> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_bool(List<bool> self, SseSerializer serializer);

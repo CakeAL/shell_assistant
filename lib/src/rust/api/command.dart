@@ -49,3 +49,6 @@ String setNvram(
         {required int function, int? value, required String password}) =>
     RustLib.instance.api.crateApiCommandSetNvram(
         function: function, value: value, password: password);
+
+Set<Architecture> getAppArch({required String path}) =>
+    RustLib.instance.api.crateApiCommandGetAppArch(path: path);

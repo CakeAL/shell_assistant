@@ -37,7 +37,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.8.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1850425911;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 538245129;
 
 // Section: executor
 
@@ -280,6 +280,36 @@ fn wire__crate__api__command__execute_write_screenshot_settings_impl(
                 let output_ok = Result::<_, ()>::Ok({
                     crate::api::command::execute_write_screenshot_settings(api_command_map);
                 })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__command__get_app_arch_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "get_app_arch",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_path = <String>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, String>((move || {
+                let output_ok = crate::api::command::get_app_arch(api_path)?;
                 Ok(output_ok)
             })())
         },
@@ -632,11 +662,32 @@ impl SseDecode for std::collections::HashMap<i32, String> {
     }
 }
 
+impl SseDecode for std::collections::HashSet<crate::api::entity::Architecture> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<crate::api::entity::Architecture>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
 impl SseDecode for String {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <Vec<u8>>::sse_decode(deserializer);
         return String::from_utf8(inner).unwrap();
+    }
+}
+
+impl SseDecode for crate::api::entity::Architecture {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::entity::Architecture::X86_64,
+            1 => crate::api::entity::Architecture::Arm64,
+            2 => crate::api::entity::Architecture::PowerPC,
+            _ => unreachable!("Invalid variant for Architecture: {}", inner),
+        };
     }
 }
 
@@ -703,6 +754,18 @@ impl SseDecode for isize {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_i64::<NativeEndian>().unwrap() as _
+    }
+}
+
+impl SseDecode for Vec<crate::api::entity::Architecture> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::entity::Architecture>::sse_decode(deserializer));
+        }
+        return ans_;
     }
 }
 
@@ -890,8 +953,8 @@ fn pde_ffi_dispatcher_primary_impl(
     match func_id {
         1 => wire__crate__api__entity__battery_info_default_impl(port, ptr, rust_vec_len, data_len),
         2 => wire__crate__api__updater__check_update_impl(port, ptr, rust_vec_len, data_len),
-        12 => wire__crate__api__command__init_app_impl(port, ptr, rust_vec_len, data_len),
-        15 => {
+        13 => wire__crate__api__command__init_app_impl(port, ptr, rust_vec_len, data_len),
+        16 => {
             wire__crate__api__entity__release_info_default_impl(port, ptr, rust_vec_len, data_len)
         }
         _ => unreachable!(),
@@ -923,19 +986,42 @@ fn pde_ffi_dispatcher_sync_impl(
             rust_vec_len,
             data_len,
         ),
-        8 => wire__crate__api__command__get_folder_size_impl(ptr, rust_vec_len, data_len),
-        9 => wire__crate__api__command__get_icon_and_convert_impl(ptr, rust_vec_len, data_len),
-        10 => wire__crate__api__command__get_system_info_impl(ptr, rust_vec_len, data_len),
-        11 => wire__crate__api__command__get_user_name_impl(ptr, rust_vec_len, data_len),
-        13 => wire__crate__api__command__open_folder_impl(ptr, rust_vec_len, data_len),
-        14 => wire__crate__api__read_value__read_nvram_value_impl(ptr, rust_vec_len, data_len),
-        16 => wire__crate__api__command__set_nvram_impl(ptr, rust_vec_len, data_len),
+        8 => wire__crate__api__command__get_app_arch_impl(ptr, rust_vec_len, data_len),
+        9 => wire__crate__api__command__get_folder_size_impl(ptr, rust_vec_len, data_len),
+        10 => wire__crate__api__command__get_icon_and_convert_impl(ptr, rust_vec_len, data_len),
+        11 => wire__crate__api__command__get_system_info_impl(ptr, rust_vec_len, data_len),
+        12 => wire__crate__api__command__get_user_name_impl(ptr, rust_vec_len, data_len),
+        14 => wire__crate__api__command__open_folder_impl(ptr, rust_vec_len, data_len),
+        15 => wire__crate__api__read_value__read_nvram_value_impl(ptr, rust_vec_len, data_len),
+        17 => wire__crate__api__command__set_nvram_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
 
 // Section: rust2dart
 
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::entity::Architecture {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::X86_64 => 0.into_dart(),
+            Self::Arm64 => 1.into_dart(),
+            Self::PowerPC => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::entity::Architecture
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::entity::Architecture>
+    for crate::api::entity::Architecture
+{
+    fn into_into_dart(self) -> crate::api::entity::Architecture {
+        self
+    }
+}
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::entity::BatteryInfo {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
@@ -1057,10 +1143,34 @@ impl SseEncode for std::collections::HashMap<i32, String> {
     }
 }
 
+impl SseEncode for std::collections::HashSet<crate::api::entity::Architecture> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::api::entity::Architecture>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
 impl SseEncode for String {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Vec<u8>>::sse_encode(self.into_bytes(), serializer);
+    }
+}
+
+impl SseEncode for crate::api::entity::Architecture {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::entity::Architecture::X86_64 => 0,
+                crate::api::entity::Architecture::Arm64 => 1,
+                crate::api::entity::Architecture::PowerPC => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
     }
 }
 
@@ -1115,6 +1225,16 @@ impl SseEncode for isize {
             .cursor
             .write_i64::<NativeEndian>(self as _)
             .unwrap();
+    }
+}
+
+impl SseEncode for Vec<crate::api::entity::Architecture> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::entity::Architecture>::sse_encode(item, serializer);
+        }
     }
 }
 
