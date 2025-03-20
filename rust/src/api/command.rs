@@ -203,7 +203,7 @@ pub fn get_folder_size(path: String) -> u64 {
 
 #[flutter_rust_bridge::frb(sync)]
 pub fn get_icon_and_convert(path: String) -> Result<String, String> {
-    let icon_path = get_app_icon(path).map_err(|e| e.to_string())?;
+    let icon_path = get_app_icon(&path).map_err(|e| e.to_string())?;
     iconutil_convert(&icon_path).map_err(|e| e.to_string())?;
     icon_path
         .to_str()
