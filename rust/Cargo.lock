@@ -1181,7 +1181,7 @@ dependencies = [
 
 [[package]]
 name = "rust_lib_shell_assistant"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "anyhow",
  "flutter_rust_bridge",
