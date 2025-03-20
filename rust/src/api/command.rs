@@ -5,6 +5,7 @@ use walkdir::WalkDir;
 use crate::api::entity::{DiskInfo, SystemInfo};
 use crate::api::util::*;
 
+use super::entity::Architecture;
 use super::util::{get_app_icon, iconutil_convert};
 
 #[flutter_rust_bridge::frb(sync)]
@@ -234,6 +235,29 @@ pub fn set_nvram(function: u8, value: Option<u8>, password: String) -> Result<St
     execute_sudo_command(args, password)
 }
 
+#[flutter_rust_bridge::frb(sync)]
+pub fn get_app_arch(path: String) -> Result<Vec<Architecture>, String> {
+    let executable_file_path = get_executable_file_path(&path).map_err(|e| e.to_string())?;
+    let res = Command::new("file")
+        .arg(executable_file_path.to_str().unwrap_or_default())
+        .output()
+        .ok()
+        .and_then(|output| Some(String::from_utf8_lossy(&output.stdout).trim().to_string()));
+    let mut archs = Vec::new();
+    if let Some(res) = res {
+        if res.contains("x86_64") {
+            archs.push(Architecture::X86_64);
+        }
+        if res.contains("arm64") {
+            archs.push(Architecture::Arm64);
+        }
+        if res.contains("PowerPC") {
+            archs.push(Architecture::PowerPC);
+        }
+    }
+    Ok(archs)
+}
+
 #[flutter_rust_bridge::frb(init)]
 pub fn init_app() {
     // Default utilities - feel free to customize
@@ -284,6 +308,13 @@ mod tests {
     #[test]
     fn test_set_startup_mute() {
         let res = set_nvram(1, Some(0), "000000".to_string());
+        dbg!(res.unwrap());
+    }
+
+    #[test]
+    fn test_get_app_arch() {
+        let path = "/Users/cakeal/Downloads/IE/Internet Explorer.app".to_string();
+        let res = get_app_arch(path);
         dbg!(res.unwrap());
     }
 }

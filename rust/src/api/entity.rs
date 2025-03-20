@@ -39,3 +39,10 @@ pub struct ReleaseInfo {
     pub tag_name: String,
     pub body: String,
 }
+
+#[derive(Debug)]
+pub enum Architecture {
+    X86_64,
+    Arm64,
+    PowerPC,
+}
