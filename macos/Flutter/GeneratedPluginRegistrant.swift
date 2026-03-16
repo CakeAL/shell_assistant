@@ -5,6 +5,7 @@
 import FlutterMacOS
 import Foundation
 
+import clipboard
 import desktop_window
 import device_info_plus
 import file_selector_macos
@@ -17,6 +18,7 @@ import system_theme
 import url_launcher_macos
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
+  ClipboardPlugin.register(with: registry.registrar(forPlugin: "ClipboardPlugin"))
   DesktopWindowPlugin.register(with: registry.registrar(forPlugin: "DesktopWindowPlugin"))
   DeviceInfoPlusMacosPlugin.register(with: registry.registrar(forPlugin: "DeviceInfoPlusMacosPlugin"))
   FileSelectorPlugin.register(with: registry.registrar(forPlugin: "FileSelectorPlugin"))

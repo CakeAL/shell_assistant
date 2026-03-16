@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shell_assistant/l10n/app_localizations.dart';
 
 class DialogHelper {
   static void showPasswordDialog(BuildContext context,

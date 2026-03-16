@@ -1,6 +1,6 @@
 import 'package:file_selector/file_selector.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shell_assistant/l10n/app_localizations.dart';
 import 'package:shell_assistant/src/rust/api/command.dart';
 import 'package:shell_assistant/widgets/open_to_see.dart';
 import 'package:shell_assistant/widgets/setting_card.dart';
