@@ -7,29 +7,42 @@ import '../frb_generated.dart';
 import 'entity.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-String executeBypassSignature(
-        {required String path, required String password}) =>
-    RustLib.instance.api
-        .crateApiCommandExecuteBypassSignature(path: path, password: password);
+String executeBypassSignature({
+  required String path,
+  required String password,
+}) => RustLib.instance.api.crateApiCommandExecuteBypassSignature(
+  path: path,
+  password: password,
+);
 
 void executeWriteScreenshotSettings({required Map<int, String> commandMap}) =>
-    RustLib.instance.api
-        .crateApiCommandExecuteWriteScreenshotSettings(commandMap: commandMap);
+    RustLib.instance.api.crateApiCommandExecuteWriteScreenshotSettings(
+      commandMap: commandMap,
+    );
 
 void executeResetScreenshotSettings() =>
     RustLib.instance.api.crateApiCommandExecuteResetScreenshotSettings();
 
-void executeWriteDockSettings(
-        {required List<bool> switchStates,
-        double? animationTime,
-        double? delayTime}) =>
-    RustLib.instance.api.crateApiCommandExecuteWriteDockSettings(
-        switchStates: switchStates,
-        animationTime: animationTime,
-        delayTime: delayTime);
+void executeWriteDockSettings({
+  required List<bool> switchStates,
+  double? animationTime,
+  double? delayTime,
+}) => RustLib.instance.api.crateApiCommandExecuteWriteDockSettings(
+  switchStates: switchStates,
+  animationTime: animationTime,
+  delayTime: delayTime,
+);
 
 void executeResetDockSettings() =>
     RustLib.instance.api.crateApiCommandExecuteResetDockSettings();
+
+void executeChangeAccentColor({
+  required int colorNumber,
+  required bool isHardwareEnclosureNumber,
+}) => RustLib.instance.api.crateApiCommandExecuteChangeAccentColor(
+  colorNumber: colorNumber,
+  isHardwareEnclosureNumber: isHardwareEnclosureNumber,
+);
 
 String? getUserName() => RustLib.instance.api.crateApiCommandGetUserName();
 
@@ -45,10 +58,15 @@ BigInt getFolderSize({required String path}) =>
 String getIconAndConvert({required String path}) =>
     RustLib.instance.api.crateApiCommandGetIconAndConvert(path: path);
 
-String setNvram(
-        {required int function, int? value, required String password}) =>
-    RustLib.instance.api.crateApiCommandSetNvram(
-        function: function, value: value, password: password);
+String setNvram({
+  required int function,
+  int? value,
+  required String password,
+}) => RustLib.instance.api.crateApiCommandSetNvram(
+  function: function,
+  value: value,
+  password: password,
+);
 
 Set<Architecture> getAppArch({required String path}) =>
     RustLib.instance.api.crateApiCommandGetAppArch(path: path);

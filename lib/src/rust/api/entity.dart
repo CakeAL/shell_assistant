@@ -8,12 +8,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `eq`, `fmt`, `fmt`, `fmt`, `hash`
 
-enum Architecture {
-  x8664,
-  arm64,
-  powerPc,
-  ;
-}
+enum Architecture { x8664, arm64, powerPc }
 
 class BatteryInfo {
   final int currentCapacity;
@@ -96,10 +91,7 @@ class ReleaseInfo {
   final String tagName;
   final String body;
 
-  const ReleaseInfo({
-    required this.tagName,
-    required this.body,
-  });
+  const ReleaseInfo({required this.tagName, required this.body});
 
   static Future<ReleaseInfo> default_() =>
       RustLib.instance.api.crateApiEntityReleaseInfoDefault();

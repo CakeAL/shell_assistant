@@ -625,6 +625,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This app is a PowerPC app and can\'t run nowadays anymore.'**
   String get onlyPowerPC;
+
+  /// No description provided for @accentColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Accent Color'**
+  String get accentColor;
+
+  /// No description provided for @accentColorInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Need to logout or restart to take effect. '**
+  String get accentColorInfo;
 }
 
 class _AppLocalizationsDelegate

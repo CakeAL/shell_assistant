@@ -289,4 +289,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onlyPowerPC =>
       'This app is a PowerPC app and can\'t run nowadays anymore.';
+
+  @override
+  String get accentColor => 'Accent Color';
+
+  @override
+  String get accentColorInfo => 'Need to logout or restart to take effect. ';
 }

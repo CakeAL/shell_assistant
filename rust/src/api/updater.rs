@@ -22,7 +22,7 @@ pub async fn check_update(
                 tag_name: "v0.0.0".to_string(),
                 body: "".to_string(),
             });
-    let lastest_version = Version::parse(&lastest_release_info.tag_name.trim_start_matches('v'))
+    let lastest_version = Version::parse(lastest_release_info.tag_name.trim_start_matches('v'))
         .unwrap_or(Version::new(0, 0, 0));
     if lastest_version > cur_version {
         callback(Some(lastest_release_info)).await;

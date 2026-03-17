@@ -87,5 +87,7 @@
   "universal": "This app is a universal app and can run on both Intel Chip and Apple Silicon macOS.",
   "onlyArm": "This app is an arm64 app and can only run on Apple Silicon macOS.",
   "onlyIntel": "This app is a x86_64 app and can run on both Intel Chip and Apple Silicon macOS (via Rosetta 2).",
-  "onlyPowerPC": "This app is a PowerPC app and can't run nowadays anymore."
-} 
+  "onlyPowerPC": "This app is a PowerPC app and can't run nowadays anymore.",
+  "accentColor": "Accent Color",
+  "accentColorInfo": "Need to logout or restart to take effect. "
+}

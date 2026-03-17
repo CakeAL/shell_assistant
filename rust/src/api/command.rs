@@ -128,6 +128,44 @@ pub fn execute_reset_dock_settings() {
 }
 
 #[flutter_rust_bridge::frb(sync)]
+pub fn execute_change_accent_color(color_number: i8, is_hardware_enclosure_number: bool) {
+    if is_hardware_enclosure_number {
+        let _ = Command::new("defaults")
+            .args(["delete", "-g", "AppleAccentColor"])
+            .output();
+        let _ = Command::new("defaults")
+            .args([
+                "write",
+                "-g",
+                "NSColorSimulateHardwareAccent",
+                "-bool",
+                "YES",
+            ])
+            .output();
+        let _ = Command::new("defaults")
+            .args([
+                "write",
+                "-g",
+                "NSColorSimulatedHardwareEnclosureNumber",
+                "-int",
+            ])
+            .arg(color_number.to_string())
+            .output();
+    } else {
+        let _ = Command::new("defaults")
+            .args(["write", "-g", "AppleAccentColor", "-int"])
+            .arg(color_number.to_string())
+            .output();
+        let _ = Command::new("defaults")
+            .args(["delete", "-g", "NSColorSimulateHardwareAccent"])
+            .output();
+        let _ = Command::new("defaults")
+            .args(["delete", "-g", "NSColorSimulatedHardwareEnclosureNumber"])
+            .output();
+    }
+}
+
+#[flutter_rust_bridge::frb(sync)]
 pub fn get_user_name() -> Option<String> {
     Command::new("whoami")
         .output()

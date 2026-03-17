@@ -9,8 +9,10 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `get_latest_release_info`
 
-Future<void> checkUpdate(
-        {required String curVersion,
-        required FutureOr<void> Function(ReleaseInfo?) callback}) =>
-    RustLib.instance.api
-        .crateApiUpdaterCheckUpdate(curVersion: curVersion, callback: callback);
+Future<void> checkUpdate({
+  required String curVersion,
+  required FutureOr<void> Function(ReleaseInfo?) callback,
+}) => RustLib.instance.api.crateApiUpdaterCheckUpdate(
+  curVersion: curVersion,
+  callback: callback,
+);

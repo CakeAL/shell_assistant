@@ -279,4 +279,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get onlyPowerPC => '该 App 是一个 PowerPC 架构的 App，已经不能在现代的 mac 上运行';
+
+  @override
+  String get accentColor => '强调色';
+
+  @override
+  String get accentColorInfo => '需要退出登录或重启才能生效。';
 }

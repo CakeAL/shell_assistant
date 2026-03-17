@@ -103,6 +103,7 @@ class _SettingsState extends State<Settings> {
             _themeCard(appTheme),
             SizedBox(height: 10),
             _languageCard(appTheme),
+            SizedBox(height: 10),
           ],
         );
       },

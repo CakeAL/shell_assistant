@@ -152,7 +152,7 @@ fn get_plist_value(contents_path: &PathBuf, key: &str) -> Result<String> {
         let entry = entry?;
         let path = entry.path();
         // 判断是否是 .plist 文件
-        if path.extension().map_or(false, |ext| ext == "plist") {
+        if path.extension().is_some_and(|ext| ext == "plist") {
             let plist_value = Value::from_file(path)?;
             match plist_value
                 .as_dictionary()

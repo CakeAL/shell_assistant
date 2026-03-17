@@ -37,7 +37,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 538245129;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1083755687;
 
 // Section: executor
 
@@ -147,6 +147,42 @@ fn wire__crate__api__command__execute_bypass_signature_impl(
             transform_result_sse::<_, String>((move || {
                 let output_ok =
                     crate::api::command::execute_bypass_signature(api_path, api_password)?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__command__execute_change_accent_color_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "execute_change_accent_color",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_color_number = <i8>::sse_decode(&mut deserializer);
+            let api_is_hardware_enclosure_number = <bool>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let output_ok = Result::<_, ()>::Ok({
+                    crate::api::command::execute_change_accent_color(
+                        api_color_number,
+                        api_is_hardware_enclosure_number,
+                    );
+                })?;
                 Ok(output_ok)
             })())
         },
@@ -750,6 +786,13 @@ impl SseDecode for i32 {
     }
 }
 
+impl SseDecode for i8 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_i8().unwrap()
+    }
+}
+
 impl SseDecode for isize {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -953,8 +996,8 @@ fn pde_ffi_dispatcher_primary_impl(
     match func_id {
         1 => wire__crate__api__entity__battery_info_default_impl(port, ptr, rust_vec_len, data_len),
         2 => wire__crate__api__updater__check_update_impl(port, ptr, rust_vec_len, data_len),
-        13 => wire__crate__api__command__init_app_impl(port, ptr, rust_vec_len, data_len),
-        16 => {
+        14 => wire__crate__api__command__init_app_impl(port, ptr, rust_vec_len, data_len),
+        17 => {
             wire__crate__api__entity__release_info_default_impl(port, ptr, rust_vec_len, data_len)
         }
         _ => unreachable!(),
@@ -971,29 +1014,32 @@ fn pde_ffi_dispatcher_sync_impl(
     match func_id {
         3 => wire__crate__api__command__execute_bypass_signature_impl(ptr, rust_vec_len, data_len),
         4 => {
+            wire__crate__api__command__execute_change_accent_color_impl(ptr, rust_vec_len, data_len)
+        }
+        5 => {
             wire__crate__api__command__execute_reset_dock_settings_impl(ptr, rust_vec_len, data_len)
         }
-        5 => wire__crate__api__command__execute_reset_screenshot_settings_impl(
+        6 => wire__crate__api__command__execute_reset_screenshot_settings_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        6 => {
+        7 => {
             wire__crate__api__command__execute_write_dock_settings_impl(ptr, rust_vec_len, data_len)
         }
-        7 => wire__crate__api__command__execute_write_screenshot_settings_impl(
+        8 => wire__crate__api__command__execute_write_screenshot_settings_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        8 => wire__crate__api__command__get_app_arch_impl(ptr, rust_vec_len, data_len),
-        9 => wire__crate__api__command__get_folder_size_impl(ptr, rust_vec_len, data_len),
-        10 => wire__crate__api__command__get_icon_and_convert_impl(ptr, rust_vec_len, data_len),
-        11 => wire__crate__api__command__get_system_info_impl(ptr, rust_vec_len, data_len),
-        12 => wire__crate__api__command__get_user_name_impl(ptr, rust_vec_len, data_len),
-        14 => wire__crate__api__command__open_folder_impl(ptr, rust_vec_len, data_len),
-        15 => wire__crate__api__read_value__read_nvram_value_impl(ptr, rust_vec_len, data_len),
-        17 => wire__crate__api__command__set_nvram_impl(ptr, rust_vec_len, data_len),
+        9 => wire__crate__api__command__get_app_arch_impl(ptr, rust_vec_len, data_len),
+        10 => wire__crate__api__command__get_folder_size_impl(ptr, rust_vec_len, data_len),
+        11 => wire__crate__api__command__get_icon_and_convert_impl(ptr, rust_vec_len, data_len),
+        12 => wire__crate__api__command__get_system_info_impl(ptr, rust_vec_len, data_len),
+        13 => wire__crate__api__command__get_user_name_impl(ptr, rust_vec_len, data_len),
+        15 => wire__crate__api__command__open_folder_impl(ptr, rust_vec_len, data_len),
+        16 => wire__crate__api__read_value__read_nvram_value_impl(ptr, rust_vec_len, data_len),
+        18 => wire__crate__api__command__set_nvram_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -1215,6 +1261,13 @@ impl SseEncode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_i32::<NativeEndian>(self).unwrap();
+    }
+}
+
+impl SseEncode for i8 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_i8(self).unwrap();
     }
 }
 
