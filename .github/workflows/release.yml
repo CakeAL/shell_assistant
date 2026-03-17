@@ -27,7 +27,7 @@ jobs:
           version: ${{ steps.get_version.outputs.VERSION }}
   build:
     name: Build releases
-    runs-on: macos-latest
+    runs-on: macos-26
     needs: changelog
     steps:
       - name: Checkout Repository
