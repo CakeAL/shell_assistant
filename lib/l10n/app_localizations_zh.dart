@@ -285,4 +285,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get accentColorInfo => '需要退出登录或重启才能生效。';
+
+  @override
+  String get showsCursor => '显示鼠标指针';
+
+  @override
+  String get captureHDR => '截屏HDR格式（应搭配heic格式使用）';
 }

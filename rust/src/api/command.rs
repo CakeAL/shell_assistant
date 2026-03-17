@@ -29,6 +29,8 @@ static SCREENSHOT_SETTINGS: LazyLock<Vec<&str>> = LazyLock::new(|| {
         "disable-shadow",
         "include-date",
         "show-thumbnail",
+        "showsCursor",
+        "captureHDR"
     ]
 });
 
@@ -39,7 +41,7 @@ pub fn execute_write_screenshot_settings(command_map: HashMap<i32, String>) {
         let _value = format!("\"{value}\"");
         let args = match key {
             0..=2 => vec![SCREENSHOT_SETTINGS[key as usize], &_value],
-            3..=5 => vec![SCREENSHOT_SETTINGS[key as usize], "-bool", value],
+            3..=7 => vec![SCREENSHOT_SETTINGS[key as usize], "-bool", value],
             _ => return, // 如果没有匹配项，跳过当前循环
         };
 

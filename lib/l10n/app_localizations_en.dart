@@ -295,4 +295,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accentColorInfo => 'Need to logout or restart to take effect. ';
+
+  @override
+  String get showsCursor => 'Shows cursor';
+
+  @override
+  String get captureHDR => 'Capture HDR (Should use heic format)';
 }

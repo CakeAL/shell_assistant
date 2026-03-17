@@ -89,5 +89,7 @@
   "onlyIntel": "该 App 是一个 x86_64 架构的 App，既可以在 Intel 芯片也可以在 Apple Silicon 的 macOS 上运行（通过Rosetta 2转译）",
   "onlyPowerPC": "该 App 是一个 PowerPC 架构的 App，已经不能在现代的 mac 上运行",
   "accentColor": "强调色",
-  "accentColorInfo": "需要退出登录或重启才能生效。"
+  "accentColorInfo": "需要退出登录或重启才能生效。",
+  "showsCursor": "显示鼠标指针",
+  "captureHDR": "截屏HDR格式（应搭配heic格式使用）"
 }

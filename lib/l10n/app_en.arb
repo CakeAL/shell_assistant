@@ -89,5 +89,7 @@
   "onlyIntel": "This app is a x86_64 app and can run on both Intel Chip and Apple Silicon macOS (via Rosetta 2).",
   "onlyPowerPC": "This app is a PowerPC app and can't run nowadays anymore.",
   "accentColor": "Accent Color",
-  "accentColorInfo": "Need to logout or restart to take effect. "
+  "accentColorInfo": "Need to logout or restart to take effect. ",
+  "showsCursor": "Shows cursor",
+  "captureHDR": "Capture HDR (Should use heic format)"
 }

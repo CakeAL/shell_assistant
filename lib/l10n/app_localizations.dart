@@ -637,6 +637,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Need to logout or restart to take effect. '**
   String get accentColorInfo;
+
+  /// No description provided for @showsCursor.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows cursor'**
+  String get showsCursor;
+
+  /// No description provided for @captureHDR.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture HDR (Should use heic format)'**
+  String get captureHDR;
 }
 
 class _AppLocalizationsDelegate
