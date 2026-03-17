@@ -52,6 +52,14 @@ dependencies:
   flutter_acrylic: ^1.1.4
   file_selector: ^1.1.0
 
+dependency_overrides:
+  # 修复 https://github.com/irondash/irondash/issues/81
+  irondash_engine_context:
+    git:
+      url: https://github.com/orestesgaolin/irondash.git
+      ref: fix-crash-on-macos
+      path: engine_context/dart
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -74,7 +82,7 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: false
+  uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:

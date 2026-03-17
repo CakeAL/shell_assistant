@@ -8,7 +8,7 @@ build:
     flutter build macos --release
 
 dev: 
-    flutter run
+    flutter run -d macos
 
 build-all: 
     
